@@ -99,7 +99,7 @@ function SendMessagePage() {
       console.error("Error in sending message", error);
 
       const axiosError = error as AxiosError<ApiResponse>;
-      let errorMessage = axiosError.response?.data.message;
+      const errorMessage = axiosError.response?.data.message;
       toast({
         title: "Sending message failed",
         description: errorMessage,

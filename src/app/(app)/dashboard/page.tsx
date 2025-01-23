@@ -42,7 +42,7 @@ function DashboardPage() {
       console.error("Error in fetching accept messages", error);
 
       const axiosError = error as AxiosError<ApiResponse>;
-      let errorMessage = axiosError.response?.data.message;
+      const errorMessage = axiosError.response?.data.message;
       toast({
         title: "Error",
         description: errorMessage || "Failed to fetch message settings",
@@ -51,7 +51,7 @@ function DashboardPage() {
     } finally {
       setIsSwitchLoading(false);
     }
-  }, [setValue]);
+  }, [setValue, toast]);
 
   const fetchMessages = useCallback(
     async (refresh: boolean = false) => {
@@ -71,7 +71,7 @@ function DashboardPage() {
         console.error("Error in fetching messages", error);
 
         const axiosError = error as AxiosError<ApiResponse>;
-        let errorMessage = axiosError.response?.data.message;
+        const errorMessage = axiosError.response?.data.message;
         toast({
           title: "Error",
           description: errorMessage || "Failed to fetch messages",
@@ -106,7 +106,7 @@ function DashboardPage() {
       console.error("Error in switching accept messages", error);
 
       const axiosError = error as AxiosError<ApiResponse>;
-      let errorMessage = axiosError.response?.data.message;
+      const errorMessage = axiosError.response?.data.message;
       toast({
         title: "Error",
         description: errorMessage || "Failed to switch accept messages",
@@ -177,7 +177,7 @@ function DashboardPage() {
       </Button>
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
         {messages.length > 0 ? (
-          messages.map((message, index) => (
+          messages.map((message) => (
             <MessageCard
               key={message._id as string}
               message={message}

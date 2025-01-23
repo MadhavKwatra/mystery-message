@@ -3,17 +3,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import Link from "next/link";
-import axios, { AxiosError } from "axios";
-import { useDebounceCallback, useDebounceValue } from "usehooks-ts";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signUpSchema } from "@/schemas/signUpSchema";
-import { ApiResponse } from "@/types/ApiResponse";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -32,10 +27,11 @@ function SignInPage() {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof signInSchema>>({
-    resolver: zodResolver(signInSchema),defaultValues: {
-      identifier:"",
-      password:""
-    }
+    resolver: zodResolver(signInSchema),
+    defaultValues: {
+      identifier: "",
+      password: "",
+    },
   });
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
@@ -118,7 +114,7 @@ function SignInPage() {
         </Form>
         <div className="text-center mt-4">
           <p>
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/sign-up" className="text-blue-600 hover:text-blue-800">
               Sign up
             </Link>
