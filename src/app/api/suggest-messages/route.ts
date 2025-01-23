@@ -3,7 +3,6 @@ import { streamText } from "ai";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
-
 export async function POST(req: Request) {
   try {
     const prompt =
@@ -13,6 +12,7 @@ export async function POST(req: Request) {
       model: google("gemini-1.5-pro-latest"),
       prompt,
       maxTokens: 400,
+      // tried adding randomness, but not working
       temperature: 0.8,
       seed: Math.floor(Math.random() * 1000),
     });
