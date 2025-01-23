@@ -4,10 +4,8 @@ import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 import { User } from "next-auth";
 
-export async function DELETE(
-  req: Request,
-  { params }: { params: { messageId: string } }
-) {
+export async function DELETE(req: Request, props: { params: Promise<{ messageId: string }> }) {
+  const params = await props.params;
   const { messageId } = params;
   await dbConnect();
 
