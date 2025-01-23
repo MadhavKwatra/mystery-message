@@ -1,8 +1,7 @@
 "use client";
 
-import MessageCard from "@/components/MessageCard";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -12,20 +11,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Message } from "@/model/User";
-import { acceptMessageSchema } from "@/schemas/acceptMessageSchema";
 import { messageSchema } from "@/schemas/messageSchema";
 import { ApiResponse } from "@/types/ApiResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
-import { Loader2, RefreshCcw } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useCompletion } from "ai/react";
@@ -56,16 +51,25 @@ function SendMessagePage() {
     isLoading: isSuggestLoading,
     error,
     complete,
+    completion,
   } = useCompletion({
     api: "/api/suggest-messages",
-    onFinish: (prompt, completion) => {
-      if (completion) {
-        setSuggestedMessages(parseStringMessages(completion));
-      }
-    },
+
+    // This makes showing the suggested messages instant , Tried other way using useEffect
+    // onFinish: (prompt, completion) => {
+    //   if (completion) {
+    //     setSuggestedMessages(parseStringMessages(completion));
+    //   }
+    // },
   });
   // TODO: Fix getting same message from AI
 
+  // This looks cool instead of instant rendering of suggested messages
+  useEffect(() => {
+    if (completion) {
+      setSuggestedMessages(parseStringMessages(completion));
+    }
+  }, [completion]);
   const messageContent = form.watch("content");
 
   const { toast } = useToast();
