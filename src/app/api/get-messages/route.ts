@@ -37,7 +37,10 @@ export async function GET(req: Request) {
 
     if (!user || user.length === 0) {
       return Response.json(
-        { success: false, message: "User not found" },
+        {
+          success: false,
+          message: !user.length ? "There are no messages" : "User not found",
+        },
         { status: 404 }
       );
     }

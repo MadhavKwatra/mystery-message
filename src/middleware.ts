@@ -15,12 +15,14 @@ export async function middleware(request: NextRequest) {
     (url.pathname.startsWith("/sign-in") ||
       url.pathname.startsWith("/sign-up") ||
       url.pathname.startsWith("/verify") ||
-      url.pathname.startsWith("/"))
+      url.pathname==="/")
   ) {
+    console.log("Have token CONDITION")
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
-  console.log(request.url);
+  console.log(request.url,"In Middleware");
   if (!token && url.pathname.startsWith("/dashboard")) {
+    console.log("Not having Token CONDITION")
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
