@@ -4,6 +4,7 @@ import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 import { User } from "next-auth";
 
+// Change isAcceptingMessage
 export async function POST(req: Request) {
   await dbConnect();
 
