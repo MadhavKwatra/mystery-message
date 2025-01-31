@@ -65,13 +65,14 @@ function Navbar() {
           )}
           <Button
             onClick={toggleDarkMode}
-            className="p-4 rounded-lg transition-colors bg-slate-100"
+            className=" rounded-full transition-colors bg-slate-100 group"
+            size={"icon"}
             variant={"outline"}
           >
             {isDarkMode ? (
-              <Moon className="w-5 h-5 text-gray-800 " />
+              <Moon className="w-5 h-5 text-gray-800 fill-current group-hover:text-accent-foreground" />
             ) : (
-              <Sun className="w-5 h-5 text-gray-800 " />
+              <Sun className="w-5 h-5 text-gray-800 fill-current" />
             )}
           </Button>
         </div>
