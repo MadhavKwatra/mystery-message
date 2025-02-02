@@ -5,7 +5,11 @@ import SendMessage from "./SendMessageComponent";
 import { Button } from "@/components/ui/button";
 import Head from "next/head";
 
-async function SendMessagePage({ params }: { params: { username: string } }) {
+async function SendMessagePage({
+  params,
+}: {
+  params: Promise<{ username: string }>;
+}) {
   const { username } = await params;
   console.log(username, "SERVer");
   const headersList = await headers();
