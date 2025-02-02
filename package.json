@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev:socket": "tsx watch server.ts",
     "dev": "next dev --turbopack",
     "build": "next build",
+    "start:socket": "NODE_ENV=production tsx server.ts",
     "start": "next start",
     "lint": "next lint"
   },
@@ -28,6 +30,7 @@
     "dayjs": "^1.11.13",
     "embla-carousel-autoplay": "^8.5.2",
     "embla-carousel-react": "^8.5.2",
+    "geoip-country": "^5.0.202501312341",
     "lucide-react": "^0.473.0",
     "mongoose": "^8.9.5",
     "next": "15.1.5",
@@ -37,14 +40,18 @@
     "react-email": "^3.0.6",
     "react-hook-form": "^7.54.2",
     "resend": "^4.1.1",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
+    "ua-parser-js": "^2.0.0",
     "usehooks-ts": "^3.1.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@types/bcryptjs": "^2.4.6",
+    "@types/geoip-country": "^4.0.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -52,6 +59,7 @@
     "eslint-config-next": "15.1.5",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.19.2",
     "typescript": "^5"
   }
 }

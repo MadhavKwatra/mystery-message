@@ -70,7 +70,7 @@ const SuggestedMessages: React.FC<{
           ) : (
             suggestedMessages.map((message, index) => (
               <Button
-              className="whitespace-normal break-words px-4 py-2 leading-normal h-auto"
+                className="whitespace-normal break-words px-4 py-2 leading-normal h-auto"
                 key={index}
                 variant="outline"
                 onClick={() => onClickMessage(message)}
@@ -115,6 +115,17 @@ function SendMessage({
   const params = useParams<{ username: string }>();
   const { username } = params;
 
+  // beaconAPI for analytics
+  useEffect(() => {
+    function trackVisit() {
+      const data = JSON.stringify({
+        userId: username,
+      });
+      // Send data to the analytics API without blocking page load
+      navigator.sendBeacon("/api/track-visit", data);
+    }
+    trackVisit();
+  }, [username]);
   const form = useForm<z.infer<typeof messageSchema>>({
     resolver: zodResolver(messageSchema),
     defaultValues: {

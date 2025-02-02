@@ -1,9 +1,9 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
-import { Message } from "@/model/User";
+import { NextRequest } from "next/server";
 
 export async function GET(
-  req: Request,
+  req: NextRequest,
   props: { params: Promise<{ username: string }> }
 ) {
   const params = await props.params;
@@ -20,9 +20,6 @@ export async function GET(
         { status: 404 }
       );
     }
-
-    //TODO: Do some Link Analytics stuff
-
     return Response.json(
       {
         success: true,
