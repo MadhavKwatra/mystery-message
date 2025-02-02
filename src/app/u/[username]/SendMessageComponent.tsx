@@ -47,15 +47,7 @@ const SuggestedMessages: React.FC<{
     completion,
   } = useCompletion({
     api: "/api/suggest-messages",
-
-    // This makes showing the suggested messages instant , Tried other way using useEffect
-    // onFinish: (prompt, completion) => {
-    //   if (completion) {
-    //     setSuggestedMessages(parseStringMessages(completion));
-    //   }
-    // },
   });
-  // TODO: Fix getting same message from AI
 
   // This looks cool instead of instant rendering of suggested messages
   useEffect(() => {
@@ -78,6 +70,7 @@ const SuggestedMessages: React.FC<{
           ) : (
             suggestedMessages.map((message, index) => (
               <Button
+              className="whitespace-normal break-words px-4 py-2 leading-normal h-auto"
                 key={index}
                 variant="outline"
                 onClick={() => onClickMessage(message)}

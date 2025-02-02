@@ -32,9 +32,9 @@ export async function GET(
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error sending message", error);
+    console.error("Error checking user", error);
     return Response.json(
-      { success: false, message: "Error sending message" },
+      { success: false, message: "Error checking user" },
       { status: 500 }
     );
   }

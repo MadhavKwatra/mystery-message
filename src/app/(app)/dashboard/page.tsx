@@ -14,11 +14,12 @@ import { Loader2, RefreshCcw } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-
+import { Skeleton } from "@/components/ui/skeleton";
 function DashboardPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSwitchLoading, setIsSwitchLoading] = useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(true);
 
   const { toast } = useToast();
 
@@ -87,8 +88,12 @@ function DashboardPage() {
 
   useEffect(() => {
     if (!session || !session.user) return;
-    fetchMessages();
-    fetchAcceptMessage();
+    const fetchData = async () => {
+      await fetchMessages();
+      await fetchAcceptMessage();
+      setIsPageLoading(false);
+    };
+    fetchData();
   }, [session, setValue, fetchAcceptMessage, fetchMessages]);
 
   const handleSwitchChange = async () => {
@@ -115,8 +120,44 @@ function DashboardPage() {
     }
   };
 
+  if (isPageLoading) {
+    return (
+      <>
+        <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
+          <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
+          <Skeleton className="w-[200px] h-[25px] rounded-md mb-2" />
+          {/* Skeleton for input + button */}
+          <div className="flex items-center mb-4 space-x-2">
+            <Skeleton className="h-10 w-full rounded-md" />
+            <Skeleton className="h-10 w-24 rounded-md" />
+          </div>
+
+          {/* Skeleton for switch */}
+          <div className="flex items-center space-x-2 mb-4">
+            <Skeleton className="h-6 w-12 rounded-full" />
+            <Skeleton className="h-6 w-32" />
+          </div>
+          <Separator />
+          <Skeleton className="w-[50px] h-[50px] rounded-md mt-4" />
+          {/* Skeleton for messages */}
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Skeleton className="h-36 w-full rounded-lg" />
+            <Skeleton className="h-36 w-full rounded-lg" />
+            <Skeleton className="h-36 w-full rounded-lg" />
+            <Skeleton className="h-36 w-full rounded-lg" />
+            <Skeleton className="h-36 w-full rounded-lg" />
+            <Skeleton className="h-36 w-full rounded-lg" />
+            <Skeleton className="h-36 w-full rounded-lg" />
+            <Skeleton className="h-36 w-full rounded-lg" />
+          </div>
+        </div>
+      </>
+    );
+  }
   if (!session || !session.user) {
-    return <div>Please login</div>;
+    return (
+      <div className="text-center text-lg font-medium mt-10">Please login</div>
+    );
   }
 
   const { username } = session.user;

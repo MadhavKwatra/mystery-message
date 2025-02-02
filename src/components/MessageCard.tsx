@@ -23,7 +23,6 @@ type MessageCardProps = {
   onMessageDelete: (messageId: string) => void;
 };
 function MessageCard({ message, onMessageDelete }: MessageCardProps) {
-  console.log(message);
   const { toast } = useToast();
   const handleDeleteConfirm = async () => {
     try {
@@ -47,7 +46,7 @@ function MessageCard({ message, onMessageDelete }: MessageCardProps) {
     }
   };
   return (
-    <Card className="card-bordered">
+    <Card className="card-bordered opacity-0 duration-500 ease-in animate-fadeIn">
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle>{message.content}</CardTitle>
