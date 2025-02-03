@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import SendMessage from "./SendMessageComponent";
 import { Button } from "@/components/ui/button";
 import Head from "next/head";
+import { Metadata } from "next";
+import { APP_NAME } from "@/config/config";
 
 async function SendMessagePage({
   params,
@@ -28,19 +30,22 @@ async function SendMessagePage({
     console.log(response.status, body, "check-user");
     if (response.status === 404) {
       return (
-        <div className="p-6 max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl font-semibold mb-4">
-            We couldn&apos;t find this user
-          </h1>
-          {
-            <p className="text-lg">
-              We couldn’t find a public profile for <strong>@{username}</strong>
-              . Change the username in the url and try again.
-            </p>
-          }
-          <Link href="/">
-            <Button className="mt-4">Go back to home</Button>
-          </Link>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="p-6 mx-auto max-w-3xl text-center">
+            <h1 className="text-4xl font-semibold mb-4">
+              We couldn&apos;t find this user
+            </h1>
+            {
+              <p className="text-lg">
+                We couldn’t find a public profile for{" "}
+                <strong>@{username}</strong>. Change the username in the url and
+                try again.
+              </p>
+            }
+            <Link href="/">
+              <Button className="mt-4">Go back to home</Button>
+            </Link>
+          </div>
         </div>
       );
     }
@@ -77,3 +82,8 @@ async function SendMessagePage({
   }
 }
 export default SendMessagePage;
+
+export const metadata: Metadata = {
+  title:"Send Message - " +APP_NAME ,
+  description: "Send anonymous messages",
+};

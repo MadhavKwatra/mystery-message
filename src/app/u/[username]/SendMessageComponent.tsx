@@ -17,7 +17,7 @@ import { messageSchema } from "@/schemas/messageSchema";
 import { ApiResponse } from "@/types/ApiResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
-import { Loader2 } from "lucide-react";
+import { Loader2, Send } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -171,20 +171,24 @@ function SendMessage({
   // User is not accepting messages
   if (!isAcceptingMessages) {
     return (
-      <div className="p-6 max-w-4xl mx-auto text-center">
-        <h1 className="text-4xl font-bold mb-4">
-          Unfortunately, @{username} is not accepting messages right now.
-        </h1>
-        <p className="text-lg text-gray-700">You can try again later.</p>
-        <Button onClick={() => router.push("/")}>Back to Home</Button>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="p-6 max-w-3xl mx-auto text-center">
+          <h1 className="text-4xl font-bold mb-4">
+            User is not accepting messages right now.
+          </h1>
+          <p className="text-lg">
+            Unfortunately, <strong>@{username}</strong> is not accepting
+            messages right now. You can try again later.
+          </p>
+          <Link href="/">
+            <Button className="mt-4">Go back to Home</Button>
+          </Link>
+        </div>
       </div>
     );
   }
   return (
-    <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-4xl">
-      <h1 className="text-4xl font-bold mb-4 text-center">
-        Public Profile Link
-      </h1>
+    <div className="my-8 mx-4 md:mx-auto p-3 md:p-6 bg-white rounded max-w-2xl pt-16">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
@@ -197,8 +201,8 @@ function SendMessage({
                 </FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Write your anonymous message here"
-                    className="resize-none"
+                    placeholder="Type your anonymous message here..."
+                    className="resize-none h-32"
                     {...field}
                   />
                 </FormControl>
@@ -206,27 +210,38 @@ function SendMessage({
               </FormItem>
             )}
           />
-          <div className="flex justify-center">
+          <Button
+            className="font-bold w-full bg-gradient-to-r from-pink-500 to-orange-600 hover:from-pink-600 hover:to-orange-700 py-5"
+            type="submit"
+            disabled={isLoading || !messageContent}
+          >
             {isLoading ? (
-              <Button disabled>
+              <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Please wait
-              </Button>
+              </>
             ) : (
-              <Button type="submit" disabled={isLoading || !messageContent}>
-                Send It
-              </Button>
+              <>
+                <Send className="w-4 h-4" /> Send Message
+              </>
             )}
-          </div>
+          </Button>
         </form>
+        <p className="mt-4 text-sm text-gray-600 text-center">
+          Your message will be sent anonymously. Please be kind and respectful.
+        </p>
       </Form>
 
       <SuggestedMessages onClickMessage={handleMessageClick} />
       <Separator className="my-6" />
       <div className="text-center">
-        <div className="mb-4">Get Your Message Board</div>
         <Link href={"/sign-up"}>
-          <Button>Create Your Account</Button>
+          <Button
+            className="font-bold py-4 px-8 md:py-6 md:px-10 md:text-lg"
+            variant={"default"}
+          >
+            Get Your own Message Board
+          </Button>
         </Link>
       </div>
     </div>

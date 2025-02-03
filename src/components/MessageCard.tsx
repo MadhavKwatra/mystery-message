@@ -46,9 +46,9 @@ function MessageCard({ message, onMessageDelete }: MessageCardProps) {
     }
   };
   return (
-    <Card className="card-bordered opacity-0 duration-500 ease-in animate-fadeIn">
+    <Card className="card-bordered opacity-0 duration-500 ease-in animate-fadeIn dark:bg-gray-900">
       <CardHeader>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-start gap-1">
           <CardTitle>{message.content}</CardTitle>
           <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -77,7 +77,6 @@ function MessageCard({ message, onMessageDelete }: MessageCardProps) {
           {dayjs(message.createdAt).format("MMM D, YYYY h:mm A")}
         </div>
       </CardHeader>
-      <CardContent></CardContent>
     </Card>
   );
 }

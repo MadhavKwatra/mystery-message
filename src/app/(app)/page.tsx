@@ -29,6 +29,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { APP_NAME } from "@/config/config";
 const faqItems = [
   {
     question: "What is this platform?",
@@ -284,7 +285,7 @@ export default function Home() {
         </div>
       </section>
       <footer className="text-center p-4 md:p-6 bg-gray-900 text-white">
-        © {currentYear} Mystery Message. All rights reserved.
+        © {currentYear} {APP_NAME}. All rights reserved.
       </footer>
     </>
   );

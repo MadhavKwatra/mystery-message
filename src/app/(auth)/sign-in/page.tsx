@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { signInSchema } from "@/schemas/signInSchema";
 import { signIn } from "next-auth/react";
+import { APP_NAME } from "@/config/config";
 
 function SignInPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,7 +69,7 @@ function SignInPage() {
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
-            Welcome Back to True Feedback
+            Welcome back to {APP_NAME}
           </h1>
           <p className="mb-4">Sign in to continue your secret conversations</p>
         </div>
@@ -80,9 +81,9 @@ function SignInPage() {
               name="identifier"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email/Username</FormLabel>
+                  <FormLabel className="font-semibold text-lg">Email/Username</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input placeholder="enter your email or username" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -93,15 +94,15 @@ function SignInPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel className="font-semibold text-lg">Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="password" {...field} type="password" />
+                    <Input placeholder="enter your password" {...field} type="password" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isSubmitting}>
+            <Button className="w-full font-bold" type="submit" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
@@ -115,7 +116,7 @@ function SignInPage() {
         <div className="text-center mt-4">
           <p>
             Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="text-blue-600 hover:text-blue-800">
+            <Link href="/sign-up" className="text-blue-600 hover:text-blue-800 font-bold">
               Sign up
             </Link>
           </p>

@@ -21,6 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { APP_NAME } from "@/config/config";
 
 function SignUpPage() {
   const [username, setUserName] = useState("");
@@ -98,7 +99,7 @@ function SignUpPage() {
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
-            Join True Feedback
+            Join {APP_NAME}
           </h1>
           <p className="mb-4">Sign up to start your anonymous adventure</p>
         </div>
@@ -110,10 +111,10 @@ function SignUpPage() {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel className="font-semibold text-lg">Username</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="username"
+                      placeholder="enter your username"
                       {...field}
                       onChange={(e) => {
                         field.onChange(e);
@@ -142,11 +143,11 @@ function SignUpPage() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className="font-semibold text-lg">Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="email" {...field} />
+                    <Input placeholder="enter your email" {...field} />
                   </FormControl>
-                  <p className="text-muted text-gray-500 text-sm">
+                  <p className="text-muted-foreground text-sm">
                     We will send you a verification code
                   </p>
                   <FormMessage />
@@ -158,15 +159,15 @@ function SignUpPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel className="font-semibold text-lg">Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="password" {...field} type="password" />
+                    <Input placeholder="enter your password" {...field} type="password" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isSubmitting}>
+            <Button className="w-full font-bold" type="submit" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
@@ -180,7 +181,7 @@ function SignUpPage() {
         <div className="text-center mt-4">
           <p>
             Already a member?{" "}
-            <Link href="/sign-in" className="text-blue-600 hover:text-blue-800">
+            <Link href="/sign-in" className="text-blue-600 hover:text-blue-800 font-bold">
               Sign in
             </Link>
           </p>

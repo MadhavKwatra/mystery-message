@@ -75,7 +75,7 @@ function VerifyAccountPage() {
                 </FormItem>
               )}
             />
-            <Button type="submit">Verify</Button>
+            <Button className="w-full font-bold" type="submit">Verify</Button>
           </form>
         </Form>
       </div>
