@@ -34,3 +34,38 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+# Functionalities i could add or Bugs i could fix
+
+### Todo
+
+- [ ] Customizable Profile Page , start with color
+- [ ] Report Bugs/Feedback page
+- [ ] Environment Setup like prod, dev
+- [ ] Update Styles
+  - [ ] Send Message Page
+- [ ] Third Party Logins/SignUps
+- [ ] Pagination
+- [ ] Different tabs for messages and dashboard charts
+- [ ] Buy domain ?
+
+### In Progress
+
+- [ ] Skeleton Loading
+  - [x] Dashboard
+  - [ ] Send Message page
+- [ ] Landing Page
+  - [x] How it works
+  - [ ] Call to action buttons
+  - [x] Testimonials
+  - [x] FAQ
+  - [ ] Gradient backgrounds
+  - [ ] 3D Animation (Padlock numbered) like some counter showing live messages being received. Start with normal counter
+- [ ] Live notification and Real time updates
+- [ ] Link Analytics in Dashboard
+  - [ ] Visits Counter
+  - [ ] Other datas like location, device, country, etc
+
+### Done
+
+- [x] Fixed same suggested messags from Gemini AI
