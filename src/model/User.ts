@@ -19,6 +19,7 @@ export interface User extends Document {
   isVerified: boolean;
   isAcceptingMessage: boolean;
   messages: Message[];
+  avatar_url: string | null;
 }
 
 const UserSchema: Schema<User> = new Schema({
@@ -43,6 +44,7 @@ const UserSchema: Schema<User> = new Schema({
   isVerified: { type: Boolean, default: false },
   isAcceptingMessage: { type: Boolean, default: true },
   messages: [MessageSchema],
+  avatar_url: { type: String, default: null },
 });
 
 // We need to keep in mind that next js have model or not. That is starting or not

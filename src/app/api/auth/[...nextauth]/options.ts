@@ -38,7 +38,7 @@ export const authOptions: NextAuthOptions = {
 
           const isPasswordCorrect = await bcrypt.compare(
             credentials.password,
-            user.password
+            user.password,
           );
 
           if (isPasswordCorrect) {
@@ -59,16 +59,23 @@ export const authOptions: NextAuthOptions = {
         session.user.isVerified = token.isVerified;
         session.user.isAcceptingMessages = token.isAcceptingMessages;
         session.user.username = token.username;
+        session.user.avatar_url = token.avatar_url;
       }
       return session;
     },
     //   user comes from above authorize function
-    async jwt({ token, user }) {
+    async jwt({ token, user, session, trigger }) {
       if (user) {
         token._id = user._id?.toString();
         token.isVerified = user.isVerified;
         token.isAcceptingMessages = user.isAcceptingMessages;
         token.username = user.username;
+        token.avatar_url = user.avatar_url;
+      }
+
+      // Updating session locally when user updates profile pic
+      if (trigger === "update" && session) {
+        token.avatar_url = session.user.avatar_url;
       }
       return token;
     },
