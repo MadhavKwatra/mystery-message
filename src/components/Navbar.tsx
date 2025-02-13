@@ -27,12 +27,13 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 
 function Navbar() {
   const router = useRouter();
   const { data: session } = useSession();
   const user: User = session?.user as User;
-
+  const { theme, setTheme } = useTheme();
   // Get the avatar URL from the session otherwise set to null
   let avatar_uri = session?.user.avatar_url || null;
 
@@ -40,28 +41,8 @@ function Navbar() {
   if (avatar_uri) {
     avatar_uri = getOptimizedAvatarImageUrl(avatar_uri);
   }
-  const [isDarkMode, setIsDarkMode] = useState(() => false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
-  // Check localStorage for saved preference
-  useEffect(() => {
-    const savedDarkMode = window.localStorage.getItem("darkMode") === "true";
-    setIsDarkMode(savedDarkMode);
-  }, []);
-  // Add or remove the `dark` class from the <html> element
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("darkMode", "true");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("darkMode", "false");
-    }
-  }, [isDarkMode]);
   // Prevent background scroll when menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -145,9 +126,11 @@ function Navbar() {
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="cursor-pointer"
-                    onClick={toggleDarkMode}
+                    onClick={() =>
+                      setTheme(theme === "light" ? "dark" : "light")
+                    }
                   >
-                    {isDarkMode ? <Moon /> : <Sun />} Change Theme
+                    {theme === "light" ? <Moon /> : <Sun />} Change Theme
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="cursor-pointer"
@@ -169,15 +152,15 @@ function Navbar() {
                 </Button>
               </Link>
               <Button
-                onClick={toggleDarkMode}
+                onClick={() => setTheme(theme === "light" ? "dark" : "light")}
                 className=" rounded-full transition-colors bg-slate-100 group"
                 size={"icon"}
                 variant={"outline"}
               >
-                {isDarkMode ? (
+                {theme === "light" ? (
                   <Moon className="w-5 h-5 text-gray-800 fill-current group-hover:text-accent-foreground" />
                 ) : (
-                  <Sun className="w-5 h-5 text-gray-800 fill-current" />
+                  <Sun className="w-5 h-5 text-gray-800 fill-current group-hover:text-accent-foreground" />
                 )}
               </Button>
             </>
@@ -223,14 +206,14 @@ function Navbar() {
           <div>
             <Button
               onClick={() => {
-                toggleDarkMode();
+                setTheme(theme === "light" ? "dark" : "light");
                 setMobileMenuOpen(false);
               }}
               className=" rounded-full transition-colors bg-slate-100 group mr-2"
               size={"icon"}
               variant={"outline"}
             >
-              {isDarkMode ? (
+              {theme === "light" ? (
                 <Moon className="w-5 h-5 text-gray-800 fill-current group-hover:text-accent-foreground" />
               ) : (
                 <Sun className="w-5 h-5 text-gray-800 fill-current" />

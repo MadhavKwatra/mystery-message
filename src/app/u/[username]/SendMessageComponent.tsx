@@ -36,7 +36,7 @@ const SuggestedMessages: React.FC<{
   onClickMessage: (message: string) => void;
 }> = ({ onClickMessage }) => {
   const [suggestedMessages, setSuggestedMessages] = useState<string[]>(
-    initialSuggestedMessages
+    initialSuggestedMessages,
   );
 
   // This helps in the streaming response of the suggest-messages api
@@ -80,20 +80,20 @@ const SuggestedMessages: React.FC<{
             ))
           )}
 
-          {isSuggestLoading ? (
-            <Button className="my-4" disabled>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Generating
-            </Button>
-          ) : (
-            <Button
-              onClick={() => complete("")}
-              className="my-4"
-              disabled={isSuggestLoading}
-            >
-              Suggest Messages with AI
-            </Button>
-          )}
+          <Button
+            onClick={() => complete("")}
+            className="my-4 font-semibold"
+            disabled={isSuggestLoading}
+          >
+            {isSuggestLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Generating
+              </>
+            ) : (
+              "Suggest Messages with AI"
+            )}
+          </Button>
         </CardContent>
       </Card>
     </div>
@@ -188,7 +188,7 @@ function SendMessage({
     );
   }
   return (
-    <div className="my-8 mx-4 md:mx-auto p-3 md:p-6 bg-white rounded max-w-2xl pt-16">
+    <div className="my-8 mx-4 md:mx-auto p-3 md:p-6 bg-white rounded max-w-2xl pt-16 dark:bg-gray-900">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
@@ -211,7 +211,7 @@ function SendMessage({
             )}
           />
           <Button
-            className="font-bold w-full bg-gradient-to-r from-pink-500 to-orange-600 hover:from-pink-600 hover:to-orange-700 py-5"
+            className="font-bold w-full bg-gradient-to-r from-pink-500 to-orange-600 hover:from-pink-600 hover:to-orange-700 py-5 dark:text-white"
             type="submit"
             disabled={isLoading || !messageContent}
           >

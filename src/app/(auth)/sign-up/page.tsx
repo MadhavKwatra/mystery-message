@@ -23,7 +23,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { APP_NAME } from "@/config/config";
 
-function SignUpPage() {
+const SignUpPage = () => {
   const [username, setUserName] = useState("");
   const [usernameMessage, setUsernameMessage] = useState("");
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
@@ -50,7 +50,7 @@ function SignUpPage() {
         try {
           // Next js prepends url automatically
           const isUserNameUniqueResponse = await axios.get(
-            `/api/check-username-unique?username=${username}`
+            `/api/check-username-unique?username=${username}`,
           );
           console.log(isUserNameUniqueResponse);
 
@@ -58,7 +58,7 @@ function SignUpPage() {
         } catch (error) {
           const axiosError = error as AxiosError<ApiResponse>;
           setUsernameMessage(
-            axiosError.response?.data.message ?? "Error checking username"
+            axiosError.response?.data.message ?? "Error checking username",
           );
         } finally {
           setIsCheckingUsername(false);
@@ -95,8 +95,8 @@ function SignUpPage() {
     }
   };
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-800">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+    <div className="flex justify-center items-center bg-gray-800 flex-grow py-10">
+      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md dark:bg-gray-900 py-16">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
             Join {APP_NAME}
@@ -111,7 +111,9 @@ function SignUpPage() {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold text-lg">Username</FormLabel>
+                  <FormLabel className="font-semibold text-lg">
+                    Username
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="enter your username"
@@ -159,15 +161,25 @@ function SignUpPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold text-lg">Password</FormLabel>
+                  <FormLabel className="font-semibold text-lg">
+                    Password
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="enter your password" {...field} type="password" />
+                    <Input
+                      placeholder="enter your password"
+                      {...field}
+                      type="password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className="w-full font-bold" type="submit" disabled={isSubmitting}>
+            <Button
+              className="w-full font-bold"
+              type="submit"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
@@ -181,7 +193,10 @@ function SignUpPage() {
         <div className="text-center mt-4">
           <p>
             Already a member?{" "}
-            <Link href="/sign-in" className="text-blue-600 hover:text-blue-800 font-bold">
+            <Link
+              href="/sign-in"
+              className="text-blue-600 hover:text-blue-800 font-bold"
+            >
               Sign in
             </Link>
           </p>
@@ -189,5 +204,5 @@ function SignUpPage() {
       </div>
     </div>
   );
-}
+};
 export default SignUpPage;

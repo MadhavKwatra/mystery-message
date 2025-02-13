@@ -65,8 +65,8 @@ function SignInPage() {
     }
   };
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-800">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+    <div className="flex flex-grow justify-center items-center  bg-gray-800 py-10">
+      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md dark:bg-gray-900 py-16">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
             Welcome back to {APP_NAME}
@@ -81,9 +81,14 @@ function SignInPage() {
               name="identifier"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold text-lg">Email/Username</FormLabel>
+                  <FormLabel className="font-semibold text-lg">
+                    Email/Username
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="enter your email or username" {...field} />
+                    <Input
+                      placeholder="enter your email or username"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -94,15 +99,25 @@ function SignInPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold text-lg">Password</FormLabel>
+                  <FormLabel className="font-semibold text-lg">
+                    Password
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="enter your password" {...field} type="password" />
+                    <Input
+                      placeholder="enter your password"
+                      {...field}
+                      type="password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className="w-full font-bold" type="submit" disabled={isSubmitting}>
+            <Button
+              className="w-full font-bold"
+              type="submit"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
@@ -116,7 +131,10 @@ function SignInPage() {
         <div className="text-center mt-4">
           <p>
             Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="text-blue-600 hover:text-blue-800 font-bold">
+            <Link
+              href="/sign-up"
+              className="text-blue-600 hover:text-blue-800 font-bold"
+            >
               Sign up
             </Link>
           </p>
