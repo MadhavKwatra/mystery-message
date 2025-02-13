@@ -23,7 +23,7 @@ async function SendMessagePage({
       `${protocol}://${host}/api/check-user/${username}`,
       {
         cache: "no-store",
-      }
+      },
     );
     const body = await response.json();
 
@@ -65,7 +65,7 @@ async function SendMessagePage({
               content={`Send an anonymous message to @${username}`}
             />
           </Head>
-          <SendMessage isAcceptingMessages={isAcceptingMessage} />;
+          <SendMessage isAcceptingMessages={isAcceptingMessage} />
         </>
       );
     }
@@ -84,6 +84,6 @@ async function SendMessagePage({
 export default SendMessagePage;
 
 export const metadata: Metadata = {
-  title:"Send Message - " +APP_NAME ,
+  title: "Send Message - " + APP_NAME,
   description: "Send anonymous messages",
 };

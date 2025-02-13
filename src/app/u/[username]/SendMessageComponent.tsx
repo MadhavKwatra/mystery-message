@@ -188,7 +188,7 @@ function SendMessage({
     );
   }
   return (
-    <div className="my-8 mx-4 md:mx-auto p-3 md:p-6 bg-white rounded max-w-2xl pt-16 dark:bg-gray-900">
+    <div className="p-5 md:my-8 mx-auto md:p-6 bg-white rounded max-w-2xl pt-16 dark:bg-gray-900">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
@@ -237,7 +237,7 @@ function SendMessage({
       <div className="text-center">
         <Link href={"/sign-up"}>
           <Button
-            className="font-bold py-4 px-8 md:py-6 md:px-10 md:text-lg"
+            className="font-bold py-4 px-4 md:py-6 md:px-10 md:text-lg"
             variant={"default"}
           >
             Get Your own Message Board
