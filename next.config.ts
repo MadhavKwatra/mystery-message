@@ -6,9 +6,9 @@ const nextConfig: NextConfig = {
 
   // Fix geoip-country returning 404
   serverExternalPackages: ["geoip-country"],
-  // experimental: {
-  //   serverComponentsExternalPackages: ["geoip-country"],
-  // },
+  outputFileTracingIncludes: {
+    "/": ["node_modules/geoip-country/data/*"],
+  },
 };
 
 export default nextConfig;
