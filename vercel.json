@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/track-visit": {
+    "api/**/*.ts": {
       "includeFiles": "node_modules/geoip-country/data/**"
     }
   }
