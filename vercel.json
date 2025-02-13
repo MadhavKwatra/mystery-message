@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/**/*": {
+    "api/**": {
       "includeFiles": "node_modules/geoip-country/data/**"
     }
   }
