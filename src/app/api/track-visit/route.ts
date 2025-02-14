@@ -8,10 +8,18 @@ export async function POST(req: Request) {
   console.log("📢 Track Visit API called");
 
   try {
+    // Check if the body is empty or contains only whitespace
+    // const requestBody = await req.text();
+    // if (!requestBody || requestBody.trim().length === 0) {
+    //   return Response.json(
+    //     { success: false, message: "Request body is empty" },
+    //     { status: 400 }
+    //   );
+    // }
     await dbConnect();
 
     const headers: Headers = req.headers;
-
+    console.log(headers, "headers in track visit");
     // Extract the relevant headers
     const userAgent: string = headers.get("user-agent") || "Unknown";
     const referer: string = headers.get("referer") || "";
@@ -22,10 +30,14 @@ export async function POST(req: Request) {
     // determine the country from the IP address
     const geo = geoIp.lookup(ipAddress);
     const country = geo ? geo.country : "Unknown";
+    console.log(geo, "geoLookup data in track visit");
 
     // Parse the user-agent
     const ua = uaParser(userAgent);
+    console.log(ua, "uaParser data in track visit");
+
     const device = ua.device.type || "Unknown";
+    const osName = ua.os.name || "Unknown";
 
     const trafficSource = referer ? new URL(referer).hostname : "Direct";
 
@@ -41,9 +53,10 @@ export async function POST(req: Request) {
         trafficSource,
         geo,
         ua,
+        osName,
         ipAddress,
       },
-      "For Deployed testing"
+      "For Deployed testing",
     );
     const newVisit = new Visit({
       userId,
@@ -52,22 +65,18 @@ export async function POST(req: Request) {
       device,
       ip: ipAddress,
       trafficSource,
+      osName,
     });
     await newVisit.save();
     return Response.json(
       { success: true, message: "Success" },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Error analyzing visit", error);
     return Response.json(
       { success: false, message: "Error analyzing visit" },
-      { status: 500 }
+      { status: 500 },
     );
   }
-}
-
-export async function GET(req: Request) {
-  // Handle GET requests here
-  return NextResponse.json({ message: "Track visit successful!" });
 }

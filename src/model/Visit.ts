@@ -7,6 +7,7 @@ export interface Visit extends Document {
   country?: string;
   device?: string;
   trafficSource?: string;
+  osName?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,8 +20,9 @@ const TrackingSchema: Schema<Visit> = new Schema(
     country: { type: String },
     device: { type: String },
     trafficSource: { type: String },
+    osName: { type: String },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Visit: Model<Visit> =
