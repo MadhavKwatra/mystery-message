@@ -56,7 +56,7 @@ export default function Analytics() {
 
   const handleMouseEnter = (
     data: { countryName: string; count: number },
-    event: MouseEvent,
+    event: React.MouseEvent<SVGPathElement, MouseEvent>,
   ) => {
     console.log("mouseEnter called with data:", data);
     const { countryName, count } = data;
@@ -284,7 +284,12 @@ export default function Analytics() {
                               <Geography
                                 key={geo.rsmKey}
                                 geography={geo}
-                                onMouseEnter={(event: MouseEvent) =>
+                                onMouseEnter={(
+                                  event: React.MouseEvent<
+                                    SVGPathElement,
+                                    MouseEvent
+                                  >,
+                                ) =>
                                   handleMouseEnter(
                                     { countryName, count },
                                     event,
