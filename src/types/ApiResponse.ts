@@ -11,5 +11,17 @@ export interface ApiResponse {
     username: string;
     email: string;
   };
+  dashboardData?: DashboardData;
   avatar_url?: string;
+}
+
+export interface DashboardData {
+  totalVisits: number;
+  uniqueVisitors: number;
+  devices: { device: string; count: number }[];
+  countries: { country: string; count: number }[];
+  trafficSources: { trafficSource: string; count: number }[];
+  dailyVisits: { date: string; count: number }[];
+  peakHours: { hour: string; count: number }[];
+  osName: { os: string; count: number }[];
 }

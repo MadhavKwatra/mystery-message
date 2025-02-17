@@ -14,6 +14,7 @@ import {
   UserRound,
   LayoutDashboard,
   LogOut,
+  ChartColumn,
 } from "lucide-react";
 import { APP_NAME } from "@/config/config";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -123,6 +124,15 @@ function Navbar() {
                   >
                     <LayoutDashboard />
                     <span>Dashboard</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      router.push("/dashboard/analytics");
+                    }}
+                    className="cursor-pointer"
+                  >
+                    <ChartColumn />
+                    <span>Analytics</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="cursor-pointer"
@@ -237,16 +247,37 @@ function Navbar() {
         <div className="px-4 py-3 space-y-1 flex flex-col gap-y-1">
           {session ? (
             <>
-              <Link href="/profile/settings">
-                <Button className="w-full font-semibold transition-colors group bg-slate-100 text-gray-900 py-2 px-4 rounded hover:bg-gray-400">
-                  <Settings className="w-5 h-5 text-gray-800 group-hover:text-accent-foreground" />{" "}
-                  Profile Settings
-                </Button>
-              </Link>
-              <Link href="/dashboard">
+              <Link
+                href="/dashboard"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                }}
+              >
                 <Button className="w-full font-semibold transition-colors group bg-slate-100 text-gray-900 py-2 px-4 rounded hover:bg-gray-400">
                   <LayoutDashboard className="w-5 h-5 text-gray-800 group-hover:text-accent-foreground" />
                   Dashboard
+                </Button>
+              </Link>
+              <Link
+                href="/dashboard/analytics"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                }}
+              >
+                <Button className="w-full font-semibold transition-colors group bg-slate-100 text-gray-900 py-2 px-4 rounded hover:bg-gray-400">
+                  <ChartColumn className="w-5 h-5 text-gray-800 group-hover:text-accent-foreground" />
+                  Analytics
+                </Button>
+              </Link>
+              <Link
+                href="/profile/settings"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                }}
+              >
+                <Button className="w-full font-semibold transition-colors group bg-slate-100 text-gray-900 py-2 px-4 rounded hover:bg-gray-400">
+                  <Settings className="w-5 h-5 text-gray-800 group-hover:text-accent-foreground" />{" "}
+                  Profile Settings
                 </Button>
               </Link>
               <Button
