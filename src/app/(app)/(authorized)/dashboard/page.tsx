@@ -12,10 +12,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2, RefreshCcw } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+// import { getSocket } from "@/config/socket";
 import { useForm } from "react-hook-form";
 import { Skeleton } from "@/components/ui/skeleton";
 function DashboardPage() {
+  // const socket = useMemo(() => {
+  //   const socket = getSocket();
+  //   if (!socket?.connected) return socket.connect();
+
+  //   return socket;
+  // }, []);
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSwitchLoading, setIsSwitchLoading] = useState(false);
@@ -27,6 +34,66 @@ function DashboardPage() {
     setMessages(messages.filter((message) => message._id !== messageId));
   };
   const { data: session } = useSession();
+
+  // Handling socket initiliazation and connection
+  // useEffect(() => {
+  //   console.log("useeffect dashboard called", session);
+  //   if (!session || !session.user) return;
+
+  //   const joinRoom = () => {
+  //     console.log("Emitting joinRoom for:", session.user.username);
+  //     socket.emit("joinRoom", session.user.username);
+  //   };
+  //   const handleConnect = () => {
+  //     console.log("Connected to Socket.io server", "Dashboard");
+  //     joinRoom();
+  //   };
+
+  //   // If already connected, join immediately.
+  //   if (socket.connected) {
+  //     console.log("already connected to room");
+  //     joinRoom();
+  //   } else {
+  //     console.log("not connected to room");
+  //     socket.on("connect", handleConnect);
+  //   }
+
+  //   const handleNewMessage = (newMessageDetails: { message: Message }) => {
+  //     console.log(
+  //       "New message received:",
+  //       newMessageDetails,
+  //       "DashBoard",
+  //       newMessageDetails.message._id
+  //     );
+  //     const { message } = newMessageDetails;
+  //     // Important: Update messages state in a way that triggers a re-render.
+  //     setMessages((prevMessages) => [message, ...prevMessages]);
+  //     // You can show toast notifications here if you want
+  //     toast({
+  //       title: "Someone sent a message!"
+  //     });
+  //   };
+
+  //   const handleDisconnect = () => {
+  //     console.log("Disconnected from Socket.io server", "Dashboard");
+  //   };
+  //   socket.on("disconnect", handleDisconnect);
+  //   socket.on("newMessage", handleNewMessage);
+
+  //   socket.on("reconnect", (attempt) => {
+  //     console.log(`Reconnected to server, attempt #${attempt}`);
+  //   });
+
+  //   // Cleanup on component unmount
+  //   return () => {
+  //     if (socket) {
+  //       socket.off("connect");
+  //       socket.off("newMessage");
+  //       socket.off("disconnect");
+  //       socket.disconnect();
+  //     }
+  //   };
+  // }, [session, toast, socket]);
   const form = useForm({
     resolver: zodResolver(acceptMessageSchema)
   });

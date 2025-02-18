@@ -9,5 +9,5 @@ export default AnalyticsPage;
 
 export const metadata: Metadata = {
   title: "Analytics - " + APP_NAME,
-  description: "Analytics of your visitors",
+  description: "Analytics of your visitors"
 };
