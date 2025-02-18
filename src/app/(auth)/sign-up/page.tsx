@@ -22,8 +22,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { APP_NAME } from "@/config/config";
-import { onGoogleSignIn } from "../sign-in/page";
 import GoogleIcon from "@/components/GoogleIcon";
+import { signIn } from "next-auth/react";
 
 const SignUpPage = () => {
   const [username, setUserName] = useState("");
@@ -71,6 +71,11 @@ const SignUpPage = () => {
     checkUsernameUnique();
   }, [username]);
 
+  const onGoogleSignIn = async () => {
+    const result = await signIn("google", {
+      redirect: false
+    });
+  };
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
     setIsSubmitting(true);
     try {

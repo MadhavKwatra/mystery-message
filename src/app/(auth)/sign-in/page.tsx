@@ -22,12 +22,6 @@ import { signIn } from "next-auth/react";
 import { APP_NAME } from "@/config/config";
 import GoogleIcon from "@/components/GoogleIcon";
 
-export const onGoogleSignIn = async () => {
-  const result = await signIn("google", {
-    redirect: false
-  });
-};
-
 function SignInPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -42,6 +36,11 @@ function SignInPage() {
     }
   });
 
+  const onGoogleSignIn = async () => {
+    const result = await signIn("google", {
+      redirect: false
+    });
+  };
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
     setIsSubmitting(true);
     const result = await signIn("credentials", {
