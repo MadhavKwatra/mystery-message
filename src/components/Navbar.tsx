@@ -14,7 +14,7 @@ import {
   UserRound,
   LayoutDashboard,
   LogOut,
-  ChartColumn,
+  ChartColumn
 } from "lucide-react";
 import { APP_NAME } from "@/config/config";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -25,7 +25,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from "./ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
@@ -37,9 +37,8 @@ function Navbar() {
   const { theme, setTheme } = useTheme();
   // Get the avatar URL from the session otherwise set to null
   let avatar_uri = session?.user.avatar_url || null;
-
   // optimize the image using cloudinary
-  if (avatar_uri) {
+  if (avatar_uri?.includes("https://res.cloudinary.com")) {
     avatar_uri = getOptimizedAvatarImageUrl(avatar_uri);
   }
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

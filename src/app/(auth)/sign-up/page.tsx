@@ -16,12 +16,14 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { APP_NAME } from "@/config/config";
+import { onGoogleSignIn } from "../sign-in/page";
+import GoogleIcon from "@/components/GoogleIcon";
 
 const SignUpPage = () => {
   const [username, setUserName] = useState("");
@@ -38,8 +40,8 @@ const SignUpPage = () => {
     defaultValues: {
       username: "",
       email: "",
-      password: "",
-    },
+      password: ""
+    }
   });
 
   useEffect(() => {
@@ -50,7 +52,7 @@ const SignUpPage = () => {
         try {
           // Next js prepends url automatically
           const isUserNameUniqueResponse = await axios.get(
-            `/api/check-username-unique?username=${username}`,
+            `/api/check-username-unique?username=${username}`
           );
           console.log(isUserNameUniqueResponse);
 
@@ -58,7 +60,7 @@ const SignUpPage = () => {
         } catch (error) {
           const axiosError = error as AxiosError<ApiResponse>;
           setUsernameMessage(
-            axiosError.response?.data.message ?? "Error checking username",
+            axiosError.response?.data.message ?? "Error checking username"
           );
         } finally {
           setIsCheckingUsername(false);
@@ -76,7 +78,7 @@ const SignUpPage = () => {
       const response = await axios.post<ApiResponse>("/api/sign-up", data);
       toast({
         title: "Success",
-        description: response.data.message,
+        description: response.data.message
       });
       router.replace(`/verify/${username}`);
 
@@ -89,7 +91,7 @@ const SignUpPage = () => {
       toast({
         title: "Signup failed",
         description: errorMessage,
-        variant: "destructive",
+        variant: "destructive"
       });
       setIsSubmitting(false);
     }
@@ -190,6 +192,24 @@ const SignUpPage = () => {
             </Button>
           </form>
         </Form>
+        <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
+          <span className="relative z-10 px-2 text-muted-foreground">Or</span>
+        </div>
+        <Button
+          className="w-full font-bold"
+          onClick={onGoogleSignIn}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
+            </>
+          ) : (
+            <>
+              <GoogleIcon /> Sign Up with Google
+            </>
+          )}
+        </Button>
         <div className="text-center mt-4">
           <p>
             Already a member?{" "}

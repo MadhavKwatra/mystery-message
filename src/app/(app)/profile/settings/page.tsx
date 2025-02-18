@@ -10,7 +10,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -40,8 +40,8 @@ const ProfileSettingsPage = () => {
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      username: "",
-    },
+      username: ""
+    }
   });
 
   // Fetch user data on component mount
@@ -52,20 +52,24 @@ const ProfileSettingsPage = () => {
         const { _id } = session.user;
 
         const response = await axios.get<ApiResponse>(
-          `/api/user-profile/${_id}`,
+          `/api/user-profile/${_id}`
         );
         const { details } = response.data;
         const fetchedUserData = {
           username: details?.username || "",
-          email: details?.email || "",
+          email: details?.email || ""
         };
         const avatar_url = details?.avatar_url || null;
         setUserData(fetchedUserData);
         form.reset(fetchedUserData); // Reset the form with fetched data
         setInitialDataLoaded(true);
         if (avatar_url) {
-          const optimizedAvatarUrl = getOptimizedAvatarImageUrl(avatar_url);
-          setPreviewURL(optimizedAvatarUrl);
+          if (avatar_url.includes("https://res.cloudinary.com")) {
+            const optimizedAvatarUrl = getOptimizedAvatarImageUrl(avatar_url);
+            setPreviewURL(optimizedAvatarUrl);
+          } else {
+            setPreviewURL(avatar_url);
+          }
         }
       } catch (error) {
         console.error("Error in fetching user details", error);
@@ -75,7 +79,7 @@ const ProfileSettingsPage = () => {
         toast({
           title: "Error",
           description: errorMessage || "Failed to fetch user details",
-          variant: "destructive",
+          variant: "destructive"
         });
       }
     };
@@ -97,12 +101,12 @@ const ProfileSettingsPage = () => {
 
       const response = await axios.post<ApiResponse>(
         `/api/user-profile/${session?.user._id}`,
-        formData,
+        formData
       );
       console.log(response.data, "update profile response");
       toast({
         title: response.data.message,
-        variant: "default",
+        variant: "default"
       });
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -112,7 +116,7 @@ const ProfileSettingsPage = () => {
         title: "Error",
         description:
           errorMessage || "Failed to update profile. Please try again.",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setIsSaving(false);
@@ -124,7 +128,7 @@ const ProfileSettingsPage = () => {
     if (!profilePicture) {
       toast({
         title: "Please select a image to upload",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
@@ -135,19 +139,19 @@ const ProfileSettingsPage = () => {
     try {
       const response = await axios.post<ApiResponse>(
         "/api/profile-img-upload",
-        formData,
+        formData
       );
 
       setProfilePicture(null);
       const optimizedUrl = getOptimizedAvatarImageUrl(
-        response?.data?.avatar_url || "",
+        response?.data?.avatar_url || ""
       );
       setPreviewURL(optimizedUrl);
       await updateSession({
-        user: { avatar_url: response?.data?.avatar_url },
+        user: { avatar_url: response?.data?.avatar_url }
       });
       toast({
-        title: response.data.message,
+        title: response.data.message
       });
     } catch (error) {
       console.log(error);
@@ -164,7 +168,7 @@ const ProfileSettingsPage = () => {
         "image/jpeg",
         "image/png",
         "image/gif",
-        "image/jpg",
+        "image/jpg"
       ];
       const maxSize = 5 * 1024 * 1024;
 
@@ -172,7 +176,7 @@ const ProfileSettingsPage = () => {
         toast({
           title: "Invalid File Type",
           description: "Only JPEG, JPG, PNG, and GIF are allowed.",
-          variant: "destructive",
+          variant: "destructive"
         });
         return;
       }
@@ -181,7 +185,7 @@ const ProfileSettingsPage = () => {
         alert({
           title: "File Size Exceeds Limit",
           description: `File size exceeds the limit of ${maxSize / (1024 * 1024)}MB.`,
-          variant: "destructive",
+          variant: "destructive"
         });
         return;
       }
@@ -200,12 +204,12 @@ const ProfileSettingsPage = () => {
       // Only send the delete request if no file selected
       if (!profilePicture) {
         const response = await axios.delete("/api/profile-img-upload", {
-          method: "DELETE",
+          method: "DELETE"
         });
         setPreviewURL(null);
         // Update the session to remove the avatar URL locally
         await updateSession({
-          user: { avatar_url: null },
+          user: { avatar_url: null }
         });
         toast({ title: response.data.message });
       } else {
@@ -217,7 +221,7 @@ const ProfileSettingsPage = () => {
       console.log("Failed to remove image", error);
       toast({
         title: "Failed to remove profile photo",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setIsRemoving(false);
@@ -235,7 +239,7 @@ const ProfileSettingsPage = () => {
   }
 
   return (
-    <div className="my-8 mx-4 md:mx-8 lg:mx-auto lg:w-[700px] p-6 bg-gray-50 dark:bg-gray-800 rounded-xl max-w-6xl">
+    <>
       <h1 className="text-4xl font-bold mb-4">Edit Profile</h1>
       {/* Profile Picture */}
       <form onSubmit={handlePictureUpload}>
@@ -349,7 +353,7 @@ const ProfileSettingsPage = () => {
           </Button>
         </form>
       </Form>
-    </div>
+    </>
   );
 };
 

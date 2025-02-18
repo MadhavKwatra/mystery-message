@@ -28,7 +28,7 @@ function DashboardPage() {
   };
   const { data: session } = useSession();
   const form = useForm({
-    resolver: zodResolver(acceptMessageSchema),
+    resolver: zodResolver(acceptMessageSchema)
   });
 
   const { register, watch, setValue } = form;
@@ -47,7 +47,7 @@ function DashboardPage() {
       toast({
         title: "Error",
         description: errorMessage || "Failed to fetch message settings",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setIsSwitchLoading(false);
@@ -65,7 +65,7 @@ function DashboardPage() {
         if (refresh) {
           toast({
             title: "Refreshed messages",
-            description: "Showing latest messages",
+            description: "Showing latest messages"
           });
         }
       } catch (error) {
@@ -76,7 +76,7 @@ function DashboardPage() {
         toast({
           title: "Error",
           description: errorMessage || "Failed to fetch messages",
-          variant: "destructive",
+          variant: "destructive"
         });
       } finally {
         setIsLoading(false);
@@ -99,13 +99,13 @@ function DashboardPage() {
   const handleSwitchChange = async () => {
     try {
       const response = await axios.post<ApiResponse>("/api/accept-messages", {
-        acceptMessages: !acceptMessages,
+        acceptMessages: !acceptMessages
       });
       setValue("acceptMessages", !acceptMessages);
 
       toast({
         title: response.data.message,
-        variant: "default",
+        variant: "default"
       });
     } catch (error) {
       console.error("Error in switching accept messages", error);
@@ -115,7 +115,7 @@ function DashboardPage() {
       toast({
         title: "Error",
         description: errorMessage || "Failed to switch accept messages",
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
@@ -123,33 +123,31 @@ function DashboardPage() {
   if (isPageLoading) {
     return (
       <>
-        <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
-          <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
-          <Skeleton className="w-[200px] h-[25px] rounded-md mb-2" />
-          {/* Skeleton for input + button */}
-          <div className="flex items-center mb-4 space-x-2">
-            <Skeleton className="h-10 w-full rounded-md" />
-            <Skeleton className="h-10 w-24 rounded-md" />
-          </div>
+        <h1 className="text-4xl font-bold mb-4 text-center">User Dashboard</h1>
+        <Skeleton className="w-[200px] h-[25px] rounded-md mb-2" />
+        {/* Skeleton for input + button */}
+        <div className="flex items-center mb-4 space-x-2">
+          <Skeleton className="h-10 w-full rounded-md" />
+          <Skeleton className="h-10 w-24 rounded-md" />
+        </div>
 
-          {/* Skeleton for switch */}
-          <div className="flex items-center space-x-2 mb-4">
-            <Skeleton className="h-6 w-12 rounded-full" />
-            <Skeleton className="h-6 w-32" />
-          </div>
-          <Separator />
-          <Skeleton className="w-[50px] h-[50px] rounded-md mt-4" />
-          {/* Skeleton for messages */}
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Skeleton className="h-36 w-full rounded-lg" />
-            <Skeleton className="h-36 w-full rounded-lg" />
-            <Skeleton className="h-36 w-full rounded-lg" />
-            <Skeleton className="h-36 w-full rounded-lg" />
-            <Skeleton className="h-36 w-full rounded-lg" />
-            <Skeleton className="h-36 w-full rounded-lg" />
-            <Skeleton className="h-36 w-full rounded-lg" />
-            <Skeleton className="h-36 w-full rounded-lg" />
-          </div>
+        {/* Skeleton for switch */}
+        <div className="flex items-center space-x-2 mb-4">
+          <Skeleton className="h-6 w-12 rounded-full" />
+          <Skeleton className="h-6 w-32" />
+        </div>
+        <Separator />
+        <Skeleton className="w-[50px] h-[50px] rounded-md mt-4" />
+        {/* Skeleton for messages */}
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Skeleton className="h-36 w-full rounded-lg" />
+          <Skeleton className="h-36 w-full rounded-lg" />
+          <Skeleton className="h-36 w-full rounded-lg" />
+          <Skeleton className="h-36 w-full rounded-lg" />
+          <Skeleton className="h-36 w-full rounded-lg" />
+          <Skeleton className="h-36 w-full rounded-lg" />
+          <Skeleton className="h-36 w-full rounded-lg" />
+          <Skeleton className="h-36 w-full rounded-lg" />
         </div>
       </>
     );
@@ -169,15 +167,14 @@ function DashboardPage() {
     navigator.clipboard.writeText(profileUrl);
     toast({
       title: "URL Copied!",
-      description: "Profile URL has been copied to clipboard.",
+      description: "Profile URL has been copied to clipboard."
     });
   };
   return (
-    <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-gray-50 dark:bg-gray-800 rounded max-w-6xl">
-      <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
-
+    <>
+      <h1 className="text-4xl font-bold mb-4 text-center">User Dashboard</h1>
       <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>{" "}
+        <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>
         <div className="flex items-center">
           <input
             type="text"
@@ -232,7 +229,7 @@ function DashboardPage() {
           <p>No messages to display.</p>
         )}
       </div>
-    </div>
+    </>
   );
 }
 export default DashboardPage;

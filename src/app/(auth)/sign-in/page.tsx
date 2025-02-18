@@ -12,7 +12,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,13 @@ import { Loader2 } from "lucide-react";
 import { signInSchema } from "@/schemas/signInSchema";
 import { signIn } from "next-auth/react";
 import { APP_NAME } from "@/config/config";
+import GoogleIcon from "@/components/GoogleIcon";
+
+export const onGoogleSignIn = async () => {
+  const result = await signIn("google", {
+    redirect: false
+  });
+};
 
 function SignInPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,8 +38,8 @@ function SignInPage() {
     resolver: zodResolver(signInSchema),
     defaultValues: {
       identifier: "",
-      password: "",
-    },
+      password: ""
+    }
   });
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
@@ -40,7 +47,7 @@ function SignInPage() {
     const result = await signIn("credentials", {
       redirect: false,
       identifier: data.identifier,
-      password: data.password,
+      password: data.password
     });
 
     console.log("SignIn result of auth", result);
@@ -50,13 +57,13 @@ function SignInPage() {
         toast({
           title: "Signin Failed",
           description: "Incorrect username or password",
-          variant: "destructive",
+          variant: "destructive"
         });
       } else {
         toast({
           title: "Error",
           description: result.error,
-          variant: "destructive",
+          variant: "destructive"
         });
       }
     }
@@ -128,6 +135,24 @@ function SignInPage() {
             </Button>
           </form>
         </Form>
+        <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
+          <span className="relative z-10 px-2 text-muted-foreground">Or</span>
+        </div>
+        <Button
+          className="w-full font-bold"
+          onClick={onGoogleSignIn}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
+            </>
+          ) : (
+            <>
+              <GoogleIcon className="w-10" /> Sign In with Google
+            </>
+          )}
+        </Button>
         <div className="text-center mt-4">
           <p>
             Don&apos;t have an account?{" "}

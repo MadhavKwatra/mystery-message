@@ -1,5 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
@@ -13,9 +14,9 @@ export const authOptions: NextAuthOptions = {
         email: {
           label: "Email",
           type: "text",
-          placeholder: "john@example.com",
+          placeholder: "john@example.com"
         },
-        password: { label: "Password", type: "password" },
+        password: { label: "Password", type: "password" }
       },
       async authorize(credentials: any): Promise<any> {
         await dbConnect();
@@ -24,9 +25,9 @@ export const authOptions: NextAuthOptions = {
             $or: [
               { email: credentials.identifier },
               {
-                username: credentials.identifier,
-              },
-            ],
+                username: credentials.identifier
+              }
+            ]
           });
 
           if (!user) {
@@ -38,7 +39,7 @@ export const authOptions: NextAuthOptions = {
 
           const isPasswordCorrect = await bcrypt.compare(
             credentials.password,
-            user.password,
+            user.password
           );
 
           if (isPasswordCorrect) {
@@ -49,10 +50,44 @@ export const authOptions: NextAuthOptions = {
         } catch (err: any) {
           throw new Error(err);
         }
-      },
+      }
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+    })
   ],
   callbacks: {
+    async signIn({ user, account }) {
+      console.log(user, account, "in signIn options ");
+      if (account?.provider === "google") {
+        await dbConnect();
+        try {
+          let existingUser = await UserModel.findOne({ email: user.email });
+          if (!existingUser) {
+            const newUser = new UserModel({
+              email: user.email,
+              username: user.name?.split(" ").join("").toLowerCase(),
+              isVerified: true,
+              avatar_url: user.image,
+              googleId: user.id
+            });
+            await newUser.save();
+            existingUser = newUser;
+          }
+
+          user._id = existingUser._id?.toString();
+          user.isVerified = existingUser.isVerified;
+          user.username = existingUser.username;
+          user.avatar_url = existingUser.avatar_url;
+          return true;
+        } catch (err: any) {
+          console.log(err);
+          throw new Error(err);
+        }
+      }
+      return true;
+    },
     async session({ session, token }) {
       if (token) {
         session.user._id = token._id?.toString();
@@ -78,16 +113,16 @@ export const authOptions: NextAuthOptions = {
         token.avatar_url = session.user.avatar_url;
       }
       return token;
-    },
+    }
   },
   //   next will handle this
   pages: {
-    signIn: "/sign-in",
+    signIn: "/sign-in"
   },
   session: {
-    strategy: "jwt",
+    strategy: "jwt"
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET
 };
 
 // Next auth will generate a basic sign in form from above details

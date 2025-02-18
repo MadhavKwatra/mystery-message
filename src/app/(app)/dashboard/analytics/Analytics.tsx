@@ -12,7 +12,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "../../../../components/ui/card";
 import {
   ChartContainer,
@@ -20,7 +20,7 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-  ChartConfig,
+  ChartConfig
 } from "@/components/ui/chart";
 import {
   Bar,
@@ -32,12 +32,12 @@ import {
   Pie,
   PieChart,
   XAxis,
-  YAxis,
+  YAxis
 } from "recharts";
 import {
   alpha2ToCountryName,
   formatChartData,
-  generateChartConfig,
+  generateChartConfig
 } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
@@ -56,7 +56,7 @@ export default function Analytics() {
 
   const handleMouseEnter = (
     data: { countryName: string; count: number },
-    event: React.MouseEvent<SVGPathElement, MouseEvent>,
+    event: React.MouseEvent<SVGPathElement, MouseEvent>
   ) => {
     console.log("mouseEnter called with data:", data);
     const { countryName, count } = data;
@@ -86,12 +86,12 @@ export default function Analytics() {
       if (response.data.dashboardData) {
         setData(response.data.dashboardData);
         toast({
-          title: response.data.message,
+          title: response.data.message
         });
       } else {
         toast({
           title: "Failed to load dashboard data",
-          variant: "destructive",
+          variant: "destructive"
         });
       }
     } catch (error) {
@@ -102,7 +102,7 @@ export default function Analytics() {
       toast({
         title: "Error",
         description: errorMessage || "Failed to fetch dashboard data",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -119,24 +119,22 @@ export default function Analytics() {
 
   if (isLoading) {
     return (
-      <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 w-full max-w-6xl rounded-xl">
-        <div className="container mx-auto">
-          <div className="mb-5 text-center">
-            <h1 className="text-4xl font-bold">Analytics</h1>
+      <div className="container mx-auto">
+        <div className="mb-5 text-center">
+          <h1 className="text-4xl font-bold">Analytics</h1>
+        </div>
+        <div className="space-y-8">
+          <div className="flex justify-evenly gap-5">
+            <Skeleton className="w-full h-[90px]" />
+            <Skeleton className="w-full" />
           </div>
-          <div className="space-y-8">
-            <div className="flex justify-evenly gap-5">
-              <Skeleton className="w-full h-[90px]" />
-              <Skeleton className="w-full" />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Skeleton className="w-full h-[300px]" />
-              <Skeleton className="w-full h-[300px]" />
-              <Skeleton className="w-full h-[300px]" />
-              <Skeleton className="w-full h-[300px]" />
-              <Skeleton className="w-full h-[300px]" />
-              <Skeleton className="w-full h-[300px]" />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Skeleton className="w-full h-[300px]" />
+            <Skeleton className="w-full h-[300px]" />
+            <Skeleton className="w-full h-[300px]" />
+            <Skeleton className="w-full h-[300px]" />
+            <Skeleton className="w-full h-[300px]" />
+            <Skeleton className="w-full h-[300px]" />
           </div>
         </div>
       </div>
@@ -144,7 +142,7 @@ export default function Analytics() {
   }
 
   return (
-    <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-gray-50 dark:bg-gray-800 rounded-xl max-w-6xl">
+    <>
       <div className="container mx-auto">
         <div className="mb-5 text-center">
           <h1 className="text-4xl font-bold">Analytics</h1>
@@ -185,7 +183,7 @@ export default function Analytics() {
                 {data?.dailyVisits.length ? (
                   <ChartContainer
                     config={generateChartConfig<"date">(
-                      data?.dailyVisits || [],
+                      data?.dailyVisits || []
                     )}
                     className="mx-auto aspect-square max-h-[300px]"
                   >
@@ -195,7 +193,7 @@ export default function Analytics() {
                       margin={{
                         top: 20,
                         left: 12,
-                        right: 12,
+                        right: 12
                       }}
                     >
                       <CartesianGrid vertical={false} />
@@ -207,7 +205,7 @@ export default function Analytics() {
                         interval={0}
                         tickFormatter={(value) =>
                           new Intl.DateTimeFormat("en-US", {
-                            day: "numeric",
+                            day: "numeric"
                           }).format(new Date(value))
                         }
                       />
@@ -221,10 +219,10 @@ export default function Analytics() {
                         stroke="hsl(var(--chart-1))"
                         strokeWidth={2}
                         dot={{
-                          fill: "hsl(var(--chart-1))",
+                          fill: "hsl(var(--chart-1))"
                         }}
                         activeDot={{
-                          r: 8,
+                          r: 8
                         }}
                       >
                         <LabelList
@@ -261,7 +259,7 @@ export default function Analytics() {
                 {data?.countries.length ? (
                   <>
                     <ComposableMap
-                      projectionConfig={{ scale: 150 }}
+                      projectionConfig={{ scale: 170 }}
                       className="transition-all duration-300"
                     >
                       <Geographies geography={geoData}>
@@ -275,7 +273,7 @@ export default function Analytics() {
                                   acc[countryName] = count;
                                   return acc;
                                 },
-                                {} as Record<string, number>,
+                                {} as Record<string, number>
                               ) ?? {};
                             const countryName = geo.properties.name;
                             const count =
@@ -288,18 +286,20 @@ export default function Analytics() {
                                   event: React.MouseEvent<
                                     SVGPathElement,
                                     MouseEvent
-                                  >,
+                                  >
                                 ) =>
                                   handleMouseEnter(
                                     { countryName, count },
-                                    event,
+                                    event
                                   )
                                 }
                                 onMouseLeave={handleMouseLeave}
                                 className="transition-all duration-200 cursor-pointer"
                                 fill={
                                   count > 0
-                                    ? "#fff"
+                                    ? theme === "dark"
+                                      ? "#fff"
+                                      : "#38bdf8"
                                     : theme === "dark"
                                       ? "#374151"
                                       : "#e5e7eb"
@@ -308,15 +308,15 @@ export default function Analytics() {
                                   default: {
                                     stroke:
                                       theme === "dark" ? "#9ca3af" : "#4b5563",
-                                    strokeWidth: 0.5,
+                                    strokeWidth: 0.5
                                   },
                                   hover: {
                                     fill: "#f59e0b", // Hover color (Orange)
-                                    stroke: "#000",
+                                    stroke: "#000"
                                   },
                                   pressed: {
-                                    fill: "#ef4444", // Clicked color (Red)
-                                  },
+                                    fill: "#ef4444" // Clicked color (Red)
+                                  }
                                 }}
                               />
                             );
@@ -335,7 +335,7 @@ export default function Analytics() {
                             borderRadius: "5px",
                             pointerEvents: "none", // Prevent tooltip from blocking mouse events
                             zIndex: 1000, // Ensure tooltip is on top
-                            whiteSpace: "nowrap", // Prevents tooltip from wrapping
+                            whiteSpace: "nowrap" // Prevents tooltip from wrapping
                           }}
                           dangerouslySetInnerHTML={{ __html: tooltipContent }} // Use dangerouslySetInnerHTML for HTML content
                         />
@@ -378,7 +378,7 @@ export default function Analytics() {
                       data={formatChartData(data?.devices ?? [], "device")}
                       layout="vertical"
                       margin={{
-                        left: 0,
+                        left: 0
                       }}
                     >
                       <YAxis
@@ -432,7 +432,7 @@ export default function Analytics() {
                 {data?.trafficSources.length ? (
                   <ChartContainer
                     config={generateChartConfig<"trafficSource">(
-                      data?.trafficSources || [],
+                      data?.trafficSources || []
                     )}
                     className="mx-auto aspect-square max-h-[300px]"
                   >
@@ -443,7 +443,7 @@ export default function Analytics() {
                       <Pie
                         data={formatChartData(
                           data?.trafficSources || [],
-                          "trafficSource",
+                          "trafficSource"
                         )}
                         dataKey="count"
                         nameKey="trafficSource"
@@ -488,7 +488,7 @@ export default function Analytics() {
                       data={data?.peakHours || []}
                       layout="vertical"
                       margin={{
-                        left: -20,
+                        left: -20
                       }}
                     >
                       <XAxis type="number" dataKey="count" hide />
@@ -580,6 +580,6 @@ export default function Analytics() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
