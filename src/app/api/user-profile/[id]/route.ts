@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  props: { params: Promise<{ id: string }> },
+  props: { params: Promise<{ id: string }> }
 ) {
   const params = await props.params;
   const { id } = params;
@@ -14,7 +14,7 @@ export async function GET(
   if (!id) {
     return Response.json(
       { success: false, message: "ID missing" },
-      { status: 400 },
+      { status: 400 }
     );
   }
   try {
@@ -22,7 +22,7 @@ export async function GET(
     if (!user) {
       return Response.json(
         { success: false, message: "User not found" },
-        { status: 404 },
+        { status: 404 }
       );
     }
     return Response.json(
@@ -32,16 +32,16 @@ export async function GET(
         details: {
           avatar_url: user.avatar_url,
           username: user.username,
-          email: user.email,
-        },
+          email: user.email
+        }
       },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (error) {
     console.error("Error fetching user details", error);
     return Response.json(
       { success: false, message: "Error fetching user details" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

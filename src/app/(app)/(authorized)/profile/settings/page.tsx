@@ -21,8 +21,9 @@ import { ApiResponse } from "@/types/ApiResponse";
 import { useToast } from "@/hooks/use-toast";
 import { useSession } from "next-auth/react";
 import { profileSchema } from "@/schemas/profileSchema";
-import { UserRound } from "lucide-react";
+import { Loader2, UserRound } from "lucide-react";
 import { Label } from "@/components/ui/label";
+import { useDebounceCallback } from "usehooks-ts";
 
 const ProfileSettingsPage = () => {
   const pictureInputRef = useRef<HTMLInputElement>(null); // Ref for file input
@@ -32,6 +33,10 @@ const ProfileSettingsPage = () => {
   const [isRemoving, setIsRemoving] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [initialDataLoaded, setInitialDataLoaded] = useState(false);
+  const [username, setUserName] = useState("");
+  const [usernameMessage, setUsernameMessage] = useState("");
+  const [isCheckingUsername, setIsCheckingUsername] = useState(false);
+  const debounced = useDebounceCallback(setUserName, 500);
   const [userData, setUserData] = useState<z.infer<
     typeof profileSchema
   > | null>(null);
@@ -87,23 +92,45 @@ const ProfileSettingsPage = () => {
     fetchUserData();
   }, [session, toast, form]);
 
-  const onSubmit = async (values: z.infer<typeof profileSchema>) => {
+  // CHeck username unique asynchronously
+  useEffect(() => {
+    const checkUsernameUnique = async () => {
+      if (username) {
+        setIsCheckingUsername(true);
+        setUsernameMessage("");
+        try {
+          // Next js prepends url automatically
+          const isUserNameUniqueResponse = await axios.get(
+            `/api/check-username-unique?username=${username}`
+          );
+          console.log(isUserNameUniqueResponse);
+
+          setUsernameMessage(isUserNameUniqueResponse.data.message);
+        } catch (error) {
+          const axiosError = error as AxiosError<ApiResponse>;
+          setUsernameMessage(
+            axiosError.response?.data.message ?? "Error checking username"
+          );
+        } finally {
+          setIsCheckingUsername(false);
+        }
+      }
+    };
+
+    checkUsernameUnique();
+  }, [username]);
+
+  const onSubmit = async (data: z.infer<typeof profileSchema>) => {
     setIsSaving(true);
 
     // TODO: Handle form submission here (e.g., send data to API)
-    console.log(values); // Log form values
+    console.log(data, "data for sending to edit api"); // Log form data
     try {
-      const formData = new FormData();
-      formData.append("username", values.username);
-      if (profilePicture) {
-        formData.append("profilePicture", profilePicture);
-      }
-
-      const response = await axios.post<ApiResponse>(
-        `/api/user-profile/${session?.user._id}`,
-        formData
-      );
+      const response = await axios.put<ApiResponse>(`/api/user-profile`, data);
       console.log(response.data, "update profile response");
+      await updateSession({
+        user: { username: response?.data?.username }
+      });
       toast({
         title: response.data.message,
         variant: "default"
@@ -315,8 +342,27 @@ const ProfileSettingsPage = () => {
               <FormItem>
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input placeholder="Username" {...field} />
+                  <Input
+                    placeholder="Username"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      debounced(e.target.value);
+                    }}
+                  />
                 </FormControl>
+                {isCheckingUsername && <Loader2 className="animate-spin" />}
+                {!isCheckingUsername && usernameMessage && (
+                  <p
+                    className={`text-sm ${
+                      usernameMessage === "Username is unique"
+                        ? "text-green-500"
+                        : "text-red-500"
+                    }`}
+                  >
+                    {usernameMessage}
+                  </p>
+                )}
                 <FormMessage />
                 <p className="text-sm text-muted-foreground ">
                   Username could be changed. Will add this later
@@ -345,9 +391,7 @@ const ProfileSettingsPage = () => {
           <Button
             className="font-semibold w-full"
             type="submit"
-            //  disabled={isSaving}
-            disabled
-            //  TODO : Add update functionality
+            disabled={isSaving || isCheckingUsername}
           >
             {isSaving ? "Saving..." : "Save Changes"}
           </Button>

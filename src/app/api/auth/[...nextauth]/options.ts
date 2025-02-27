@@ -110,7 +110,8 @@ export const authOptions: NextAuthOptions = {
 
       // Updating session locally when user updates profile pic
       if (trigger === "update" && session) {
-        token.avatar_url = session.user.avatar_url;
+        if (session.user.avatar_url) token.avatar_url = session.user.avatar_url;
+        if (session.user.username) token.username = session.user.username;
       }
       return token;
     }

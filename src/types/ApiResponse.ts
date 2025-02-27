@@ -13,6 +13,7 @@ export interface ApiResponse {
   };
   dashboardData?: DashboardData;
   avatar_url?: string;
+  username?: string;
 }
 
 export interface DashboardData {
