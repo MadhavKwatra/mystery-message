@@ -116,24 +116,6 @@ function Navbar() {
                     Edit Profile
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={() => {
-                      router.push("/dashboard");
-                    }}
-                    className="cursor-pointer"
-                  >
-                    <LayoutDashboard />
-                    <span>Dashboard</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      router.push("/dashboard/analytics");
-                    }}
-                    className="cursor-pointer"
-                  >
-                    <ChartColumn />
-                    <span>Analytics</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
                     className="cursor-pointer"
                     onClick={() =>
                       setTheme(theme === "light" ? "dark" : "light")

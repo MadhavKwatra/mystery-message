@@ -364,9 +364,6 @@ const ProfileSettingsPage = () => {
                   </p>
                 )}
                 <FormMessage />
-                <p className="text-sm text-muted-foreground ">
-                  Username could be changed. Will add this later
-                </p>
               </FormItem>
             )}
           />
