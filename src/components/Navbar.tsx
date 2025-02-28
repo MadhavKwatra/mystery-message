@@ -73,9 +73,9 @@ function Navbar() {
             />
           )}
         </Button>
-        <a href="#" className="text-xl font-bold md:mb-0">
+        <Link href="/" className="text-xl font-bold md:mb-0">
           {APP_NAME}
-        </a>
+        </Link>
         <div className="hidden md:flex gap-5 items-center">
           {session ? (
             <>
