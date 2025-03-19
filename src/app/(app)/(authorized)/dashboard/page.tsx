@@ -140,6 +140,10 @@ function DashboardPage() {
 
         const axiosError = error as AxiosError<ApiResponse>;
         const errorMessage = axiosError.response?.data.message;
+        if (axiosError.response?.status === 404) {
+          setMessages([]);
+          return;
+        }
         toast({
           title: "Error",
           description: errorMessage || "Failed to fetch messages",
@@ -293,7 +297,12 @@ function DashboardPage() {
             />
           ))
         ) : (
-          <p>No messages to display.</p>
+          <div className="col-span-1 md:col-span-2 flex flex-col items-center justify-center text-center p-6">
+            <p className="text-2xl font-semibold">📭 Your inbox is empty!</p>
+            <p className="text-lg mt-2">
+              🔗Share your link to start receiving anonymous messages.
+            </p>
+          </div>
         )}
       </div>
     </>
