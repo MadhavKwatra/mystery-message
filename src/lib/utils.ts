@@ -13,7 +13,7 @@ import countries from "i18n-iso-countries";
 })(); // Call the IIFE immediately
 
 export function alpha2ToCountryName(
-  alpha2Code: string | null | undefined,
+  alpha2Code: string | null | undefined
 ): string {
   if (!alpha2Code) {
     return "Unknown";
@@ -43,7 +43,7 @@ export function getOptimizedAvatarImageUrl(url: string) {
     src: publicId ?? "",
     format: "auto",
     crop: "auto",
-    quality: "auto",
+    quality: "auto"
   });
 }
 type ChartData<T extends string> = {
@@ -51,18 +51,18 @@ type ChartData<T extends string> = {
 } & { count: number }; // The count field
 
 export const generateChartConfig = <T extends string>(
-  data: ChartData<T>[],
+  data: ChartData<T>[]
 ): Record<string, { label: string; color?: string }> => {
   const defaultConfig: Record<string, { label: string; color?: string }> = {
     count: { label: "Visitors" },
-    unknown: { label: "Unknown", color: "hsl(var(--chart-5))" },
+    unknown: { label: "Unknown", color: "hsl(var(--chart-5))" }
   };
   const colors = [
     "hsl(var(--chart-1))",
     "hsl(var(--chart-2))",
     "hsl(var(--chart-3))",
     "hsl(var(--chart-4))",
-    "hsl(var(--chart-5))",
+    "hsl(var(--chart-5))"
   ];
   // Auto-detect key by looking at the first object (excluding "count")
   const key = Object.keys(data[0]).find((k) => k !== "count");
@@ -82,7 +82,7 @@ export const generateChartConfig = <T extends string>(
       uniqueItems.add(value);
       chartConfig[value] = {
         label: value.charAt(0).toUpperCase() + value.slice(1), // Capitalize first letter
-        color: colors[colorIndex % colors.length], // Cycle colors using modulo
+        color: colors[colorIndex % colors.length] // Cycle colors using modulo
       };
       colorIndex++; // Move to the next color
     }
@@ -93,7 +93,7 @@ export const generateChartConfig = <T extends string>(
 
 export function formatChartData<T extends { [key: string]: any }>(
   data: T[],
-  key: keyof T,
+  key: keyof T
 ): (T & { fill: string })[] {
   return data.map((item) => {
     const originalKey = String(item[key]);
@@ -105,7 +105,7 @@ export function formatChartData<T extends { [key: string]: any }>(
     return {
       ...item,
       [key]: formattedKey,
-      fill: `var(--color-${formattedKey})`,
+      fill: `var(--color-${formattedKey})`
     };
   });
 }

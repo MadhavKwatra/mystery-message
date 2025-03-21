@@ -1,3 +1,4 @@
+// Landing page at /
 "use client";
 
 import {
@@ -5,20 +6,15 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
-  CarouselItem,
+  CarouselItem
 } from "@/components/ui/carousel";
 import messages from "@/messages.json";
-import {
-  Mail,
-  MoveRight,
-  Share,
-  User,
-} from "lucide-react";
+import { Mail, MoveRight, Share, User } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -26,7 +22,7 @@ import {
   Accordion,
   AccordionContent,
   AccordionItem,
-  AccordionTrigger,
+  AccordionTrigger
 } from "@/components/ui/accordion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { APP_NAME } from "@/config/config";
@@ -34,50 +30,50 @@ const faqItems = [
   {
     question: "What is this platform?",
     answer:
-      "This is an anonymous message platform where users can create a link to receive anonymous messages or feedback from anywhere in the world.",
+      "This is an anonymous message platform where users can create a link to receive anonymous messages or feedback from anywhere in the world."
   },
   {
     question: "How does it work?",
     answer:
-      "Create an account, share your unique link, and start receiving anonymous messages from others.",
+      "Create an account, share your unique link, and start receiving anonymous messages from others."
   },
   {
     question: "Is it free to use?",
-    answer: "Yes, the platform is completely free to use.",
+    answer: "Yes, the platform is completely free to use."
   },
   {
     question: "How do I send anonymous messages?",
     answer:
-      "Use the unique link of the person you want to message, type your message, and send it anonymously.",
+      "Use the unique link of the person you want to message, type your message, and send it anonymously."
   },
   {
     question: "How do I create an account?",
     answer:
-      "Simply sign up with your email/username and password. Or you can choose other ways like Google ,Instagram etc. ",
+      "Simply sign up with your email/username and password. Or you can choose other ways like Google ,Instagram etc. "
   },
   {
     question: "Why am I not receiving messages?",
     answer:
-      "Ensure that you are accepting messages and that you've shared your unique link correctly. If the issue persists, raise a bug.",
-  },
+      "Ensure that you are accepting messages and that you've shared your unique link correctly. If the issue persists, raise a bug."
+  }
 ];
 
 const steps = [
   {
     icon: <User className="w-8 h-8 text-blue-500 dark:text-blue-300" />,
     title: "Create Your Account",
-    description: "Sign up with email/username, or using your socials.",
+    description: "Sign up with email/username, or using your socials."
   },
   {
     icon: <Share className="w-8 h-8 text-green-500 dark:text-green-300" />,
     title: "Share Your Link",
-    description: "Share your unique link with others on social media.",
+    description: "Share your unique link with others on social media."
   },
   {
     icon: <Mail className="w-8 h-8 text-purple-500 dark:text-purple-300" />,
     title: "Receive Anonymous Messages",
-    description: "Messages are delivered to your inbox.",
-  },
+    description: "Messages are delivered to your inbox."
+  }
 ];
 
 const testimonials = [
@@ -86,57 +82,57 @@ const testimonials = [
     role: "Software Engineer",
     feedback:
       "The anonymous messaging feature is brilliant. It allows me to communicate openly without any hesitation!",
-    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+    avatar: "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     name: "Priya Sharma",
     role: "Product Manager",
     feedback:
       "This platform makes anonymous conversations seamless. It's been a great way to foster honest dialogue in my team.",
-    avatar: "https://randomuser.me/api/portraits/women/2.jpg",
+    avatar: "https://randomuser.me/api/portraits/women/2.jpg"
   },
   {
     name: "Sarah Lee",
     role: "Content Writer",
     feedback:
       "I appreciate the simplicity and privacy it offers. The anonymity allows everyone to express their opinions freely.",
-    avatar: "https://randomuser.me/api/portraits/women/5.jpg",
+    avatar: "https://randomuser.me/api/portraits/women/5.jpg"
   },
   {
     name: "Vikram Ayer",
     role: "Graphic Designer",
     feedback:
       "Using this platform for anonymous brainstorming sessions has been a game-changer for our creative team.",
-    avatar: "https://randomuser.me/api/portraits/men/6.jpg",
+    avatar: "https://randomuser.me/api/portraits/men/6.jpg"
   },
   {
     name: "Emma Carter",
     role: "HR Manager",
     feedback:
       "Anonymity has never been this easy to maintain. It's helped us uncover honest feedback and improve team morale effortlessly.",
-    avatar: "https://randomuser.me/api/portraits/women/7.jpg",
+    avatar: "https://randomuser.me/api/portraits/women/7.jpg"
   },
   {
     name: "Ryan Evans",
     role: "Team Lead",
     feedback:
       "The platform's anonymous messaging feature has completely changed how we communicate during retrospectives. It’s amazing for fostering transparency.",
-    avatar: "https://randomuser.me/api/portraits/men/8.jpg",
+    avatar: "https://randomuser.me/api/portraits/men/8.jpg"
   },
   {
     name: "Alice Johnson",
     role: "UX Designer",
     feedback:
       "The user experience is flawless. I especially love how it encourages open and honest discussions anonymously.",
-    avatar: "https://randomuser.me/api/portraits/women/3.jpg",
+    avatar: "https://randomuser.me/api/portraits/women/3.jpg"
   },
   {
     name: "Arjun Patel",
     role: "Marketing Specialist",
     feedback:
       "The anonymous messaging tool has been an incredible way to gather insights and ideas from my colleagues without bias.",
-    avatar: "https://randomuser.me/api/portraits/men/4.jpg",
-  },
+    avatar: "https://randomuser.me/api/portraits/men/4.jpg"
+  }
 ];
 
 export default function Home() {
