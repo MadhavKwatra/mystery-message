@@ -41,7 +41,7 @@ export default function StarRating({ value, onChange }: StarRatingProps) {
           );
         })}
       </div>
-      <p className="text-sm font-medium text-gray-300">{feedback}</p>
+      <p className="text-sm font-medium">{feedback}</p>
     </div>
   );
 }

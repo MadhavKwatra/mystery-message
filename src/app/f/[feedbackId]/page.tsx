@@ -1,5 +1,10 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { submitFeedbackSchema } from "@/schemas/submitFeedbackSchema";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
@@ -10,193 +15,258 @@ import {
   FormLabel,
   FormMessage
 } from "@/components/ui/form";
-import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Loader2, Send, FileText, Download, LinkIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { submitFeedbackSchema } from "@/schemas/submitFeedbackSchema";
-import { ApiResponse } from "@/types/ApiResponse";
-import { zodResolver } from "@hookform/resolvers/zod";
-import axios, { AxiosError } from "axios";
-import { Loader2, Send, Star, FileText, Download } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import StarRating from "@/components/StarRating";
+type CheckedState = boolean | "indeterminate";
+
+// Dummy experience tags
+const EXPERIENCE_TAGS = [
+  "Easy to use",
+  "Intuitive Design",
+  "Needs Improvement",
+  "Complicated",
+  "Buggy",
+  "Fast Performance",
+  "Great Features"
+] as const;
+
+// Dummy feedback form details
 const dummyFeedbackDetails = {
+  id: "feedback-123",
   title: "Website Usability Feedback",
   description:
-    "Please share your thoughts on the new website design. Let us know what's working and what needs improvement.",
+    "We're looking to improve our user experience. Your honest feedback is crucial!",
+  link: "https://example.com/product",
   files: [
     {
-      url: "https://via.placeholder.com/150", // Example image URL
+      url: "/api/placeholder/150/150",
       name: "screenshot.png",
       type: "image/png"
+    }
+  ],
+  customQuestions: [
+    {
+      id: "q1",
+      type: "text",
+      question: "What specific feature would you like to see improved?"
     },
     {
-      url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", // Example PDF URL
-      name: "user-report.pdf",
-      type: "application/pdf"
+      id: "q2",
+      type: "rating",
+      question: "How easy was the navigation?"
     }
   ]
 };
 
-function AnonymousFeedbackForm() {
-  const router = useRouter();
+export default function AnonymousFeedbackForm() {
   const { toast } = useToast();
+  const router = useRouter();
   const params = useParams<{ feedbackId: string }>();
   const { feedbackId } = params;
 
-  const [feedbackDetails, setFeedbackDetails] = useState<{
-    title: string;
-    description: string;
-    files: { url: string; name: string; type: string }[]; // Added files field
-  } | null>(null);
+  const [feedbackDetails, setFeedbackDetails] = useState(dummyFeedbackDetails);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [customResponses, setCustomResponses] = useState<{
+    [key: string]: any;
+  }>({});
+
+  const form = useForm({
+    resolver: zodResolver(submitFeedbackSchema),
+    defaultValues: {
+      rating: 0,
+      comment: "",
+      experienceTags: []
+    }
+  });
 
   useEffect(() => {
+    // Simulate fetching feedback form details
     const fetchFeedbackDetails = async () => {
       try {
-        // TODO: Replace with actual API endpoint
-        // const response = await axios.get<{
-        //   title: string;
-        //   description: string;
-        //   files: { url: string; name: string; type: string }[];
-        // }>(`/api/feedback/${feedbackId}`);
-        // setFeedbackDetails(response.data);
-        // Simulate API loading delay
-        setTimeout(() => {
-          setFeedbackDetails(dummyFeedbackDetails);
-          setLoading(false);
-        }, 1000); // Simulate network delay
-      } catch (err) {
-        setError("Failed to load feedback details. Please try again.");
-      } finally {
+        // TODO: Replace with actual API call
+        // const response = await fetch(`/api/feedback/${feedbackId}`);
+        // const data = await response.json();
+        // setFeedbackDetails(data);
+
+        setLoading(false);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to load feedback form",
+          variant: "destructive"
+        });
         setLoading(false);
       }
     };
 
     fetchFeedbackDetails();
-  }, [feedbackId]);
+  }, [feedbackId, toast]);
 
-  const form = useForm<z.infer<typeof submitFeedbackSchema>>({
-    resolver: zodResolver(submitFeedbackSchema),
-    defaultValues: {
-      rating: 0,
-      comment: ""
-    }
-  });
-
-  const onSubmit = async (data: z.infer<typeof submitFeedbackSchema>) => {
+  const onSubmit = async (data: any) => {
     try {
-      const response = await axios.post<ApiResponse>(`/api/submit-feedback`, {
-        feedbackId,
-        rating: data.rating,
-        comment: data.comment
+      // Combine main feedback data with custom question responses
+      const fullSubmission = {
+        ...data,
+        customResponses,
+        feedbackFormId: feedbackDetails.id
+      };
+
+      // TODO: Replace with actual API submission
+      const response = await fetch("/api/submit-feedback", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(fullSubmission)
       });
 
-      toast({
-        title: "Feedback Submitted",
-        description: response.data.message
-      });
-      form.reset();
+      if (response.ok) {
+        toast({
+          title: "Feedback Submitted",
+          description: "Thank you for your valuable input!"
+        });
+        router.push("/feedback-submitted");
+      } else {
+        throw new Error("Submission failed");
+      }
     } catch (error) {
-      console.error("Error submitting feedback", error);
-      const axiosError = error as AxiosError<ApiResponse>;
       toast({
-        title: "Submission failed",
-        description:
-          axiosError.response?.data.message || "Something went wrong.",
+        title: "Submission Failed",
+        description: "An error occurred while submitting your feedback",
         variant: "destructive"
       });
     }
   };
 
-  return (
-    <div className="p-5 md:my-8 mx-auto md:p-6 bg-white rounded max-w-2xl pt-16 dark:bg-gray-900">
-      {/* Heading & Instructions */}
-      <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold text-center">
-          Share Your Anonymous Feedback
-        </h1>
-        <p className="text-gray-400 mt-4 text-justify">
-          The user has requested feedback on the following topic. Your honest
-          and constructive input will help improve their work.
-          <br />
-          Please review the details below, rate their work, and leave your
-          thoughts in the comment section.
-          <br />
-          Any attached files are provided as reference material.
-        </p>
-      </div>
-      {loading ? (
-        <div className="flex justify-center items-center h-32">
-          <Loader2 className="animate-spin w-6 h-6" />
-        </div>
-      ) : error ? (
-        <p className="text-red-500 text-center">{error}</p>
-      ) : (
-        <Card className="mb-6">
-          <CardHeader>
-            <h2 className="text-xl font-semibold">{feedbackDetails?.title}</h2>
-          </CardHeader>
-          <CardContent>
-            <p className="text-gray-700 dark:text-gray-300">
-              {feedbackDetails?.description}
-            </p>
-            {/* Uploaded Files Section */}
+  const handleCustomQuestionResponse = (questionId: string, value: any) => {
+    setCustomResponses((prev) => ({
+      ...prev,
+      [questionId]: value
+    }));
+  };
 
-            {feedbackDetails?.files && feedbackDetails?.files.length > 0 && (
-              <>
-                <Separator className="my-4" />
-                <h3 className="font-semibold text-lg">Attachments</h3>
-                <div className="mt-2 space-y-2">
-                  {feedbackDetails.files.map((file, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between bg-gray-100 dark:bg-gray-800 p-3 rounded-lg"
-                    >
-                      <div className="flex items-center gap-3">
-                        <FileText className="w-5 h-5 text-blue-500" />
-                        <span className="text-sm truncate max-w-[200px]">
-                          {file.name}
-                        </span>
-                      </div>
-                      <a
-                        href={file.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline flex items-center gap-1"
-                      >
-                        <Download className="w-4 h-4" /> Download
-                      </a>
-                    </div>
-                  ))}
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader2 className="animate-spin w-10 h-10 text-blue-500" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-5 md:my-8 mx-auto md:p-6 bg-white rounded max-w-2xl dark:bg-gray-900">
+      {/* Feedback Form Header */}
+      <div className="text-center mb-8 bg-gray-50 p-6 rounded-lg dark:bg-gray-800 ">
+        <h1 className="text-4xl font-bold  mb-4">
+          Share Your Honest Feedback
+          <span role="img" aria-label="megaphone" className="ml-3">
+            🗣️
+          </span>
+        </h1>
+        <p className="text-lg dark:text-gray-300 text-gray-600  max-w-2xl mx-auto">
+          We&apos;re committed to continuous improvement, and your candid
+          insights are the key to making our product or service better. This
+          anonymous feedback form allows you to share your genuine experiences,
+          suggestions, and perspectives without hesitation.
+        </p>
+        <div className="flex justify-center items-center mt-4 space-x-2">
+          <span role="img" aria-label="shield" className="text-2xl">
+            🛡️
+          </span>
+          <span className="text-sm text-gray-500">
+            Your feedback is 100% anonymous and confidential
+          </span>
+        </div>
+      </div>
+
+      {/* Specific Feedback Details */}
+      <div className="bg-white border rounded-lg p-6 mb-6 shadow-sm dark:bg-gray-800">
+        <h2 className="text-2xl font-semibold mb-4">{feedbackDetails.title}</h2>
+        <p className="text-gray-600 dark:text-gray-300 mb-4">
+          {feedbackDetails.description}
+        </p>
+
+        {feedbackDetails.link && (
+          <div className="mt-4">
+            <a
+              href={feedbackDetails.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline flex items-center"
+            >
+              <LinkIcon className="mr-2 w-5 h-5" />
+              Related Link
+            </a>
+          </div>
+        )}
+      </div>
+
+      {/* Attachments */}
+      {feedbackDetails.files && feedbackDetails.files.length > 0 && (
+        <Card className="mb-6 dark:bg-gray-800">
+          <CardHeader className="font-semibold">Attachments</CardHeader>
+          <CardContent>
+            {feedbackDetails.files.map((file, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-between p-3  rounded-lg mb-2 dark:bg-gray-900 bg-gray-100"
+              >
+                <div className="flex items-center space-x-3">
+                  <FileText className="text-blue-500" />
+                  <span>{file.name}</span>
                 </div>
-              </>
-            )}
+                <a
+                  href={file.url}
+                  download
+                  className="text-blue-600 hover:underline flex items-center"
+                >
+                  <Download className="mr-2 w-4 h-4" /> Download
+                </a>
+              </div>
+            ))}
           </CardContent>
         </Card>
       )}
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {/* Star Rating Field */}
+          {/* Custom Questions */}
+          {feedbackDetails.customQuestions?.map((question) => (
+            <div key={question.id} className="space-y-2">
+              <FormLabel className="text-lg font-semibold">
+                {question.question}
+              </FormLabel>
+              {question.type === "text" && (
+                <Textarea
+                  placeholder="Your response..."
+                  onChange={(e) =>
+                    handleCustomQuestionResponse(question.id, e.target.value)
+                  }
+                />
+              )}
+              {question.type === "rating" && (
+                <StarRating
+                  value={customResponses[question.id] || 0}
+                  onChange={(value) =>
+                    handleCustomQuestionResponse(question.id, value)
+                  }
+                />
+              )}
+            </div>
+          ))}
+
+          {/* Overall Rating */}
           <FormField
             control={form.control}
             name="rating"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-bold text-xl">
-                  Rate Your Experience
+                <FormLabel className="text-xl font-bold">
+                  Overall Rating
                 </FormLabel>
                 <FormControl>
                   <StarRating value={field.value} onChange={field.onChange} />
@@ -206,18 +276,57 @@ function AnonymousFeedbackForm() {
             )}
           />
 
-          {/* Comment Input */}
+          {/* Experience Tags */}
+          <div className="space-y-2">
+            <FormLabel className="text-xl font-bold">Experience Tags</FormLabel>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+              {EXPERIENCE_TAGS.map((tag) => (
+                <FormField
+                  key={tag}
+                  control={form.control}
+                  name="experienceTags"
+                  render={({ field }) => {
+                    return (
+                      <FormItem
+                        key={tag}
+                        className="flex flex-row items-start space-x-3 space-y-0"
+                      >
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value?.includes(tag)}
+                            onCheckedChange={(checked: CheckedState) => {
+                              return checked === true
+                                ? field.onChange([...(field.value || []), tag])
+                                : field.onChange(
+                                    field.value?.filter(
+                                      (value) => value !== tag
+                                    )
+                                  );
+                            }}
+                          />
+                        </FormControl>
+                        <FormLabel className="font-normal">{tag}</FormLabel>
+                      </FormItem>
+                    );
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Comment */}
+          {/* TODO : CHange to rich text editor */}
           <FormField
             control={form.control}
             name="comment"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-bold text-xl">
-                  Leave a Comment
+                <FormLabel className="text-xl font-bold">
+                  Additional Comments
                 </FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Write your feedback here..."
+                    placeholder="Share your detailed thoughts..."
                     className="resize-none h-32"
                     {...field}
                   />
@@ -229,8 +338,8 @@ function AnonymousFeedbackForm() {
 
           {/* Submit Button */}
           <Button
-            className="font-bold w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 py-5 dark:text-white"
             type="submit"
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 dark:text-white font-bold"
             disabled={form.formState.isSubmitting}
           >
             {form.formState.isSubmitting ? (
@@ -240,18 +349,18 @@ function AnonymousFeedbackForm() {
               </>
             ) : (
               <>
-                <Send className="w-4 h-4" /> Submit Feedback
+                <Send className="mr-2 h-4 w-4" /> Submit Feedback
               </>
             )}
           </Button>
         </form>
       </Form>
+
       <Separator className="my-6" />
       <p className="text-center text-sm text-gray-600">
-        Your feedback is anonymous. Be constructive and respectful.
+        Your feedback is anonymous and greatly appreciated. Be constructive and
+        respectful.
       </p>
     </div>
   );
 }
-
-export default AnonymousFeedbackForm;
