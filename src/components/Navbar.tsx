@@ -14,7 +14,8 @@ import {
   UserRound,
   LayoutDashboard,
   LogOut,
-  ChartColumn
+  ChartColumn,
+  MessageCircleQuestion
 } from "lucide-react";
 import { APP_NAME } from "@/config/config";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -248,6 +249,17 @@ function Navbar() {
                 <Button className="w-full font-semibold transition-colors group bg-slate-100 text-gray-900 py-2 px-4 rounded hover:bg-gray-400">
                   <ChartColumn className="w-5 h-5 text-gray-800 group-hover:text-accent-foreground" />
                   Analytics
+                </Button>
+              </Link>
+              <Link
+                href="/feedbacks"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                }}
+              >
+                <Button className="w-full font-semibold transition-colors group bg-slate-100 text-gray-900 py-2 px-4 rounded hover:bg-gray-400">
+                  <MessageCircleQuestion className="w-5 h-5 text-gray-800 group-hover:text-accent-foreground" />
+                  Feedbacks
                 </Button>
               </Link>
               <Link

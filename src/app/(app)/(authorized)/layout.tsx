@@ -1,7 +1,12 @@
 "use client";
 
 import Sidebar, { SidebarItem } from "@/components/Sidebar";
-import { LayoutDashboard, Settings, ChartColumn } from "lucide-react";
+import {
+  LayoutDashboard,
+  Settings,
+  ChartColumn,
+  MessageCircleQuestion
+} from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 export default function AuthorizedLayout({
   children
@@ -29,6 +34,14 @@ export default function AuthorizedLayout({
           icon={<ChartColumn size={20} />}
           text="Analytics"
           active={pathname === "/dashboard/analytics"}
+        />
+        <SidebarItem
+          handleClick={() => {
+            router.push("/feedbacks");
+          }}
+          icon={<MessageCircleQuestion size={20} />}
+          text="Feedbacks"
+          active={pathname === "/feedbacks"}
         />
         <hr className="my-3" />
         <SidebarItem
