@@ -38,6 +38,7 @@
     "dayjs": "^1.11.13",
     "embla-carousel-autoplay": "^8.5.2",
     "embla-carousel-react": "^8.5.2",
+    "framer-motion": "^12.6.1",
     "geoip-country": "^5.0.202501312341",
     "i18n-iso-countries": "^7.13.0",
     "lucide-react": "^0.473.0",
