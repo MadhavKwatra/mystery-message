@@ -6,10 +6,15 @@ const feedbackTexts = ["Terrible", "Bad", "Okay", "Good", "Great"];
 
 interface StarRatingProps {
   value: number;
-  onChange: (rating: number) => void;
+  onChange?: (rating: number) => void;
+  preview?: boolean;
 }
 
-export default function StarRating({ value, onChange }: StarRatingProps) {
+export default function StarRating({
+  value,
+  onChange,
+  preview = false
+}: StarRatingProps) {
   const [hoveredRating, setHoveredRating] = useState<number | null>(null);
   const displayRating = hoveredRating ?? value;
   const feedback = feedbackTexts[Math.round(displayRating) - 1] || "Rate this";
@@ -25,9 +30,10 @@ export default function StarRating({ value, onChange }: StarRatingProps) {
               key={index}
               className="group relative"
               type="button"
-              onClick={() => onChange(starValue)}
-              onMouseEnter={() => setHoveredRating(starValue)}
-              onMouseLeave={() => setHoveredRating(null)}
+              onClick={() => onChange?.(starValue)}
+              disabled={preview}
+              onMouseEnter={() => !preview && setHoveredRating(starValue)}
+              onMouseLeave={() => !preview && setHoveredRating(null)}
             >
               <Star
                 className={cn(

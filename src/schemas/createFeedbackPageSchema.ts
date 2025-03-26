@@ -14,8 +14,8 @@ const MAX_FILES = 5;
 
 export const createFeedbackPageSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters"),
-  description: z.string().optional(),
-  link: z.string().url("Please enter a valid URL").optional(),
+  description: z.string().min(10, "Description must be at least 10 characters"),
+  link: z.string().url("Please enter a valid URL").or(z.literal("")).optional(),
   files: z
     .array(
       z

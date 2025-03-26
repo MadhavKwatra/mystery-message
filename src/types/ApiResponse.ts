@@ -1,3 +1,4 @@
+import { FeedbackPage } from "@/model/FeedbackPage";
 import { Message } from "@/model/User";
 
 // Defining api responses
@@ -14,6 +15,9 @@ export interface ApiResponse {
   dashboardData?: DashboardData;
   avatar_url?: string;
   username?: string;
+  shareableLink?: string;
+  feedbacksData?: Array<FeedbackPage>;
+  feedbackData?: FeedbackPage;
 }
 
 export interface DashboardData {

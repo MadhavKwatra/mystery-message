@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
 import {
   File as FileIcon,
@@ -38,12 +38,26 @@ const formatFileSize = (bytes: number): string => {
 
 interface FileUploaderProps {
   onFilesChange?: (files: File[]) => void;
+  resetTrigger?: boolean; // 👈 Add this prop
 }
 
-export default function FileUploader({ onFilesChange }: FileUploaderProps) {
+export default function FileUploader({
+  onFilesChange,
+  resetTrigger
+}: FileUploaderProps) {
   const { toast } = useToast();
   const [files, setFiles] = useState<File[]>([]);
   const [isUploading, setIsUploading] = useState(false);
+  const prevResetTrigger = useRef(resetTrigger); // Track previous resetTrigger value
+
+  // Reset files when resetTrigger changes
+  useEffect(() => {
+    if (resetTrigger !== prevResetTrigger.current) {
+      setFiles([]);
+      onFilesChange?.([]); // Notify form about reset
+      prevResetTrigger.current = resetTrigger; // Update ref to avoid infinite loop
+    }
+  }, [resetTrigger, onFilesChange]); // 👈 Listen for resetTrigger changes
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -218,7 +232,9 @@ export default function FileUploader({ onFilesChange }: FileUploaderProps) {
                   <span className="font-bold text-gray-500">{index + 1}.</span>
                   {getFileIcon(file.type)}
                   <div>
-                    <p className="text-sm font-medium">{file.name}</p>
+                    <p className="text-sm font-medium dark:text-black">
+                      {file.name}
+                    </p>
                     <p className="text-xs text-gray-500">
                       {formatFileSize(file.size)}
                     </p>

@@ -17,13 +17,9 @@ import {
   CardTitle
 } from "@/components/ui/card";
 import { Plus } from "lucide-react";
-
-interface FeedbackPage {
-  id: string;
-  title: string;
-  description: string;
-  url: string;
-}
+import axios from "axios";
+import { ApiResponse } from "@/types/ApiResponse";
+import { FeedbackPage } from "@/model/FeedbackPage";
 
 interface FeedbackCardProps {
   page: FeedbackPage;
@@ -42,7 +38,7 @@ function FeedbackCard({ page }: FeedbackCardProps) {
         <p className="text-gray-700 text-base">{page.description}</p>
       </CardContent>
       <CardFooter>
-        <Link href={page.url}>
+        <Link href={`/feedbacks/${page.slug}`}>
           <Button className="font-semibold">Visit Page</Button>
         </Link>
       </CardFooter>
@@ -50,38 +46,8 @@ function FeedbackCard({ page }: FeedbackCardProps) {
   );
 }
 
-interface FeedbackPage {
-  id: string;
-  title: string;
-  description: string;
-  url: string;
-}
-
-// Dummy data for now
-const dummyFeedbackPages: FeedbackPage[] = [
-  {
-    id: "1",
-    title: "Product Feedback",
-    description: "Feedback for our product launch.",
-    url: "/feedback/product-feedback"
-  },
-  {
-    id: "2",
-    title: "Service Feedback",
-    description: "Let us know your service experience.",
-    url: "/feedback/service-feedback"
-  },
-  {
-    id: "3",
-    title: "Website Feedback",
-    description: "Share your thoughts about our website design.",
-    url: "/feedback/website-feedback"
-  }
-];
-
 export default function FeedbackList() {
-  const [feedbackPages, setFeedbackPages] =
-    useState<FeedbackPage[]>(dummyFeedbackPages);
+  const [feedbackPages, setFeedbackPages] = useState<FeedbackPage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(true);
   const { toast } = useToast();
@@ -91,11 +57,15 @@ export default function FeedbackList() {
   const fetchFeedbackPages = useCallback(async () => {
     setIsLoading(true);
     try {
-      // TODO: Replace with actual API call
-      // const response = await axios.get<ApiResponse>("/api/get-feedback-pages");
-      // setFeedbackPages(response.data.pages || []);
-      // Simulate a delay for loading
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await axios.get<ApiResponse>("/api/feedbacks");
+      setFeedbackPages(response.data.feedbacksData || []);
+      console.log(response, "Response from get api 62");
+      toast({
+        title: "Success",
+        description: response.data.message,
+        variant: "default",
+        duration: 3000
+      });
     } catch (error) {
       console.error("Error fetching feedback pages", error);
       toast({
@@ -153,7 +123,7 @@ export default function FeedbackList() {
       {feedbackPages.length > 0 ? (
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
           {feedbackPages.map((page) => (
-            <FeedbackCard key={page.id} page={page} />
+            <FeedbackCard key={page._id} page={page} />
           ))}
         </div>
       ) : (
