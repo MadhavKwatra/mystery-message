@@ -13,12 +13,15 @@ export async function POST(req: Request) {
       prompt,
       maxTokens: 400,
       temperature: 1.0,
-      seed: Math.floor(Math.random() * 1000),
+      seed: Math.floor(Math.random() * 1000)
     });
 
     return result.toDataStreamResponse();
   } catch (error) {
-    console.error("An unexpected error occurred", error);
+    console.error(
+      "An unexpected error occurred in suggest messages api",
+      error
+    );
     // throw error;
     return Response.json(
       { success: false, message: "An unexpected error occurred" },

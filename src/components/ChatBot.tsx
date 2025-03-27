@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { APP_NAME } from "@/config/config";
+import { useCompletion } from "ai/react";
 
 // Message schema for validation
 const MessageSchema = z.object({
@@ -40,30 +41,44 @@ export default function Chatbot() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [hasShownWelcome, setHasShownWelcome] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  // Show welcome message when opened for the first time
-  useEffect(() => {
-    if (isOpen && !hasShownWelcome && messages.length === 0) {
-      setTimeout(() => {
-        setMessages([
-          {
-            content: "Hi there! 👋 Ready to chat?",
-            sender: "bot",
-            timestamp: new Date()
-          }
-        ]);
-        setHasShownWelcome(true);
-      }, 500);
-    }
-  }, [isOpen, hasShownWelcome, messages.length]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const {
+    isLoading: isAiAnswering,
+    error,
+    complete,
+    completion
+  } = useCompletion({
+    api: "/api/chatbot"
+  });
+
+  useEffect(() => {
+    if (completion) {
+      setIsLoading(false);
+
+      setMessages((prev) => {
+        if (prev.length > 0 && isAiAnswering) {
+          // Update the last bot message during streaming
+          return prev.map((msg, index) =>
+            index === prev.length - 1 && msg.sender === "bot"
+              ? { ...msg, content: completion }
+              : msg
+          );
+        } else {
+          // Add a new bot message when a fresh response starts
+          return [
+            ...prev,
+            { content: completion, sender: "bot", timestamp: new Date() }
+          ];
+        }
+      });
+    }
+  }, [completion, isAiAnswering]);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -78,19 +93,9 @@ export default function Chatbot() {
       setMessages((prev) => [...prev, validatedContent]);
       setInput("");
       setIsLoading(true);
-      // TODO : Use Gemin AI to handle bot
-      // Simulate bot response after a delay
-      setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          {
-            content: `Thanks for your message: "${validatedContent.content}". I'm here to help!`,
-            sender: "bot",
-            timestamp: new Date()
-          }
-        ]);
-        setIsLoading(false);
-      }, 1500);
+      complete(validatedContent.content);
+      console.log(validatedContent, "validatedContent");
+      // Send user message to chatbot API
     } catch (error) {
       if (error instanceof z.ZodError) {
         console.error("Validation error:", error.errors);
@@ -149,7 +154,7 @@ export default function Chatbot() {
                 }}
               >
                 {/* Header */}
-                <div className="flex items-center justify-between border-b border-gray-800 p-4">
+                <div className="flex items-center justify-between border-b border-gray-800 p-2 px-4">
                   <div className="flex items-center gap-2">
                     <div className="flex h-8 w-8 items-center justify-center rounded-md bg-black">
                       <VenetianMask className="h-10 w-10 text-[#a855f7]" />
@@ -254,6 +259,11 @@ export default function Chatbot() {
                         ))}
                       </div>
                     )}
+                    {error && (
+                      <p className="text-red-500">
+                        Oops! Something went wrong. Please try again.
+                      </p>
+                    )}
                     <div ref={messagesEndRef} />
                   </div>
                 </div>
@@ -278,7 +288,8 @@ export default function Chatbot() {
                           }
                         }}
                       />
-                      <div className="absolute bottom-2 left-2 flex gap-2">
+                      {/* TODO: ADd more functionality Maybe */}
+                      {/* <div className="absolute bottom-2 left-2 flex gap-2">
                         <button
                           type="button"
                           className="rounded-full p-1.5 text-gray-400 hover:bg-gray-700 hover:text-white"
@@ -303,7 +314,7 @@ export default function Chatbot() {
                         >
                           <Paperclip className="h-5 w-5" />
                         </button>
-                      </div>
+                      </div> */}
                       <div className="absolute bottom-2 right-2 flex gap-2">
                         <button
                           type="submit"
