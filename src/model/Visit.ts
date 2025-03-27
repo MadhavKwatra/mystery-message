@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema, Model } from "mongoose";
 
 export interface Visit extends Document {
-  userId: string;
+  userId?: string;
   userAgent?: string;
   ip?: string;
   country?: string;
@@ -16,7 +16,7 @@ export interface Visit extends Document {
 
 const TrackingSchema: Schema<Visit> = new Schema(
   {
-    userId: { type: String, required: true },
+    userId: { type: String },
     userAgent: { type: String },
     ip: { type: String },
     country: { type: String },

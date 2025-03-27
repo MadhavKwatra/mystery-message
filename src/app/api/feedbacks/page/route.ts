@@ -130,14 +130,19 @@ export async function POST(req: NextRequest) {
       files: fileUrls
     });
     const feedbackPage = await newFeedbackPage.save();
-    console.log("Feedback page created:", feedbackPage);
+    console.log(
+      "Feedback page created:",
+      feedbackPage,
+      feedbackPage.files,
+      fileUrls
+    );
 
     return NextResponse.json(
       {
         success: true,
         message: "Feedback page created successfully",
         feedbackPage,
-        shareableLink: `feedbacks/${slug}`
+        shareableLink: `f/${slug}`
       },
       { status: 201 }
     );

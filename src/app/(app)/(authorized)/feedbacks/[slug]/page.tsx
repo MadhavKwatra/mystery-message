@@ -51,7 +51,9 @@ export default function FeedbackPageComponent() {
   //   TODO : CHnage copy url accordingly
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(window.location.href);
+    navigator.clipboard.writeText(
+      window.location.href.replace("feedbacks", "f")
+    );
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
     toast({

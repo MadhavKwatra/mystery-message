@@ -65,6 +65,8 @@ const ShareableLinkModal = ({
   shareableLink,
   toast
 }: ShareableLinkModalProps) => {
+  const baseUrl = `${window.location.protocol}//${window.location.host}`;
+  const feedbackUrl = `${baseUrl}/${shareableLink}`;
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -75,10 +77,10 @@ const ShareableLinkModal = ({
           </DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-2 mt-4">
-          <Input value={shareableLink} readOnly />
+          <Input value={feedbackUrl} readOnly />
           <Button
             onClick={() => {
-              navigator.clipboard.writeText(shareableLink);
+              navigator.clipboard.writeText(feedbackUrl);
               toast({
                 title: "Link Copied",
                 description:

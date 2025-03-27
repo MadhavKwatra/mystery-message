@@ -255,7 +255,8 @@ export default function FileUploader({
         </div>
       )}
 
-      {files.length > 0 && (
+      {/* TODO :Think about it show or not */}
+      {/* {files.length > 0 && (
         <Button
           onClick={handleUpload}
           className="w-full"
@@ -270,7 +271,7 @@ export default function FileUploader({
             "Upload Files"
           )}
         </Button>
-      )}
+      )} */}
     </div>
   );
 }
