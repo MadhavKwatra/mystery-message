@@ -1,41 +1,45 @@
+// schemas/submitFeedbackSchema.ts
 import { z } from "zod";
 
-export const submitFeedbackSchema = z.object({
-  rating: z
-    .number()
-    .min(0.5, "Please select a rating")
-    .max(5, "Rating cannot exceed 5 stars"),
+export const answerSchema = z.object({
+  questionId: z.string().min(1, "Question ID is required"),
+  response: z.union([z.string().trim().max(500), z.number().min(1).max(5)]),
+  type: z.enum(["text", "rating"])
+});
 
+export const customQuestionResponseSchema = z
+  .object({
+    questionId: z.string().min(1, "Question ID is required"),
+    type: z.enum(["text", "rating"]),
+    response: z.union([
+      z.string().trim().max(500, "Response must be at most 500 characters"),
+      z
+        .number()
+        .min(1, "Rating must be at least 1")
+        .max(5, "Rating cannot exceed 5 stars")
+    ])
+  })
+  .refine(
+    (data) => {
+      if (data.type === "text") return typeof data.response === "string";
+      if (data.type === "rating") return typeof data.response === "number";
+      return false;
+    },
+    {
+      message: "Invalid response type for the question"
+    }
+  );
+
+export const submitFeedbackSchema = z.object({
   comment: z
     .string()
     .trim()
+    .min(10, "Comment must be at least 10 characters")
     .max(500, "Comment must be at most 500 characters")
     .optional(),
 
-  experienceTags: z
-    .array(z.string())
-    .max(5, "You can select up to 5 experience tags")
-    .optional(),
-
-  // Optional: Add more specific validation for experience tags
-  experienceTagsConstraints: z
-    .array(z.string())
-    .refine(
-      (tags) => {
-        const allowedTags = [
-          "Easy to use",
-          "Intuitive Design",
-          "Needs Improvement",
-          "Complicated",
-          "Buggy",
-          "Fast Performance",
-          "Great Features"
-        ];
-        return tags.every((tag) => allowedTags.includes(tag));
-      },
-      { message: "One or more selected tags are invalid" }
-    )
-    .optional()
+  customQuestions: z.array(customQuestionResponseSchema).optional()
 });
 
 export type FeedbackData = z.infer<typeof submitFeedbackSchema>;
+export type Answer = z.infer<typeof answerSchema>;

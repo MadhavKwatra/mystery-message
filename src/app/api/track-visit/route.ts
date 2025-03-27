@@ -42,7 +42,8 @@ export async function POST(req: Request) {
     const trafficSource = referer ? new URL(referer).hostname : "Direct";
 
     const body = await req.json();
-    const { userId } = body;
+    const { userId, feedbackPageId, isFeedbackPage } = body;
+
     console.log(
       "Visit details:",
       {
@@ -55,8 +56,10 @@ export async function POST(req: Request) {
         ua,
         osName,
         ipAddress,
+        feedbackPageId,
+        isFeedbackPage
       },
-      "For Deployed testing",
+      "For Deployed testing"
     );
     const newVisit = new Visit({
       userId,
@@ -66,17 +69,19 @@ export async function POST(req: Request) {
       ip: ipAddress,
       trafficSource,
       osName,
+      feedbackPageId,
+      isFeedbackPage: !!isFeedbackPage
     });
     await newVisit.save();
     return Response.json(
       { success: true, message: "Success" },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (error) {
     console.error("Error analyzing visit", error);
     return Response.json(
       { success: false, message: "Error analyzing visit" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

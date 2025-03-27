@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import FeedbackPage from "@/model/FeedbackPage";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../auth/[...nextauth]/options";
 
 export async function GET(
   req: NextRequest,
@@ -8,18 +10,30 @@ export async function GET(
 ) {
   try {
     await dbConnect();
-    const feedback = await FeedbackPage.findOne({ slug: params.slug });
+    const session = await getServerSession(authOptions);
+    const isAnonymousSender = !session || !session.user;
+
+    const feedback = await FeedbackPage.findOne({ slug: params.slug }).lean();
     if (!feedback) {
       return NextResponse.json(
         { success: false, message: "Not found" },
         { status: 404 }
       );
     }
+
+    // Return different fields based on user type
+    const feedbackData = isAnonymousSender
+      ? {
+          ...feedback,
+          feedbacks: []
+        }
+      : feedback;
+
     return NextResponse.json(
       {
         success: true,
         message: "Feedback Page Fetched Successfully",
-        feedbackData: feedback
+        feedbackData
       },
       { status: 200 }
     );

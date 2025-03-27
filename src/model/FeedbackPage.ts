@@ -22,6 +22,12 @@ export interface FeedbackPage extends Document {
   feedbacks: Feedback[];
 }
 
+export interface Answer {
+  questionId: string;
+  response: string | number; // Text response or rating (1-5)
+  type: "text" | "rating";
+}
+
 const FeedbackSchema = new Schema<Feedback>(
   {
     answers: [
@@ -48,6 +54,7 @@ const FeedbackPageSchema: Schema<FeedbackPage> = new Schema(
         type: { type: String, enum: ["text", "rating"], required: true }
       }
     ],
+    files: { type: [String], default: [] },
     slug: {
       type: String,
       unique: true,
