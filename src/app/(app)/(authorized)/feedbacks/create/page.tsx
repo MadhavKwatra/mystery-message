@@ -50,6 +50,7 @@ import {
   DialogHeader,
   DialogTitle
 } from "@/components/ui/dialog";
+import CopyLink from "@/components/CopyLink";
 
 // --- ShareableLinkModal Component ---
 type ShareableLinkModalProps = {
@@ -62,8 +63,7 @@ type ShareableLinkModalProps = {
 const ShareableLinkModal = ({
   open,
   onOpenChange,
-  shareableLink,
-  toast
+  shareableLink
 }: ShareableLinkModalProps) => {
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
   const feedbackUrl = `${baseUrl}/${shareableLink}`;
@@ -78,19 +78,7 @@ const ShareableLinkModal = ({
         </DialogHeader>
         <div className="flex items-center gap-2 mt-4">
           <Input value={feedbackUrl} readOnly />
-          <Button
-            onClick={() => {
-              navigator.clipboard.writeText(feedbackUrl);
-              toast({
-                title: "Link Copied",
-                description:
-                  "The shareable link has been copied to your clipboard.",
-                variant: "default"
-              });
-            }}
-          >
-            Copy
-          </Button>
+          <CopyLink text={feedbackUrl} />
         </div>
         {/* <div className="mt-4">
           <Button variant="outline" onClick={() => onOpenChange(false)}>

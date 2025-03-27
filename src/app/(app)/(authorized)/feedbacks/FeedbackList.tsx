@@ -20,6 +20,7 @@ import { Plus } from "lucide-react";
 import axios from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
 import { FeedbackPage } from "@/model/FeedbackPage";
+import CopyLink from "@/components/CopyLink";
 
 interface FeedbackCardProps {
   page: FeedbackPage;
@@ -37,10 +38,15 @@ function FeedbackCard({ page }: FeedbackCardProps) {
       <CardContent>
         <p className="text-gray-700 text-base">{page.description}</p>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex items-center justify-between">
         <Link href={`/feedbacks/${page.slug}`}>
           <Button className="font-semibold">Visit Page</Button>
         </Link>
+        <CopyLink
+          text={
+            window.location.href.replace("feedbacks", "f") + `/${page.slug}`
+          }
+        />
       </CardFooter>
     </Card>
   );

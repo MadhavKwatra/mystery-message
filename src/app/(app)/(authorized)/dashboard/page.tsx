@@ -16,6 +16,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 // import { getSocket } from "@/config/socket";
 import { useForm } from "react-hook-form";
 import { Skeleton } from "@/components/ui/skeleton";
+import CopyLink from "@/components/CopyLink";
 function DashboardPage() {
   // const socket = useMemo(() => {
   //   const socket = getSocket();
@@ -234,13 +235,6 @@ function DashboardPage() {
   // TODO: do more research
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
   const profileUrl = `${baseUrl}/u/${username}`;
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(profileUrl);
-    toast({
-      title: "URL Copied!",
-      description: "Profile URL has been copied to clipboard."
-    });
-  };
   return (
     <>
       <h1 className="text-4xl font-bold mb-4 text-center">User Dashboard</h1>
@@ -253,9 +247,7 @@ function DashboardPage() {
             disabled
             className="input input-bordered w-full rounded-md p-2 mr-2"
           />
-          <Button className="font-semibold" onClick={copyToClipboard}>
-            Copy
-          </Button>
+          <CopyLink text={profileUrl} />
         </div>
       </div>
 

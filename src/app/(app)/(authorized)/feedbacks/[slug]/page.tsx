@@ -16,12 +16,12 @@ import axios from "axios";
 import { type FeedbackPage } from "@/model/FeedbackPage";
 import { toast } from "@/hooks/use-toast";
 import Link from "next/link";
+import CopyLink from "@/components/CopyLink";
 
 export default function FeedbackPageComponent() {
   const { slug } = useParams();
   const [feedbackPage, setFeedbackPage] = useState<FeedbackPage | null>(null);
   const [loading, setLoading] = useState(true);
-  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     async function fetchFeedbackPage() {
@@ -47,22 +47,6 @@ export default function FeedbackPageComponent() {
     }
     fetchFeedbackPage();
   }, [slug]);
-
-  //   TODO : CHnage copy url accordingly
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(
-      window.location.href.replace("feedbacks", "f")
-    );
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-    toast({
-      title: "Share Link",
-      description: "Feedback page link copied to clipboard",
-      variant: "default",
-      duration: 2000
-    });
-  };
 
   if (loading) {
     return (
@@ -104,18 +88,7 @@ export default function FeedbackPageComponent() {
           <h1 className="text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-3">
             {feedbackPage.title} <ChartBar className="w-8 h-8 text-blue-500" />
           </h1>
-          <Button
-            onClick={handleCopy}
-            variant="outline"
-            className="hover:bg-gray-100 hover:dark:text-black transition-colors"
-          >
-            {copied ? (
-              <ClipboardCheck className="w-10 h-10 text-green-500 mr-2" />
-            ) : (
-              <Clipboard className="w-10 h-10 mr-2" />
-            )}
-            Copy Link
-          </Button>
+          <CopyLink text={window.location.href.replace("feedbacks", "f")} />
         </div>
 
         <p className="text-gray-600 mb-6 leading-relaxed">
