@@ -3,31 +3,27 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
 import StarRating from "@/components/StarRating";
-import {
-  Clipboard,
-  ClipboardCheck,
-  MessageCircle,
-  Star,
-  ChartBar
-} from "lucide-react";
+import { MessageCircle, ChartBar } from "lucide-react";
 import axios from "axios";
 import { type FeedbackPage } from "@/model/FeedbackPage";
 import { toast } from "@/hooks/use-toast";
 import Link from "next/link";
 import CopyLink from "@/components/CopyLink";
+import { ApiResponse } from "@/types/ApiResponse";
 
 export default function FeedbackPageComponent() {
   const { slug } = useParams();
-  const [feedbackPage, setFeedbackPage] = useState<FeedbackPage | null>(null);
+  const [feedbackPageData, setFeedbackPageData] = useState<FeedbackPage | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchFeedbackPage() {
       try {
-        const response = await axios.get(`/api/feedbacks/${slug}`);
-        setFeedbackPage(response.data);
+        const response = await axios.get<ApiResponse>(`/api/feedbacks/${slug}`);
+        setFeedbackPageData(response?.data?.feedbackData || null);
         toast({
           title: "Feedback Page Loaded",
           description: "Your feedback page is ready",
@@ -58,7 +54,7 @@ export default function FeedbackPageComponent() {
     );
   }
 
-  if (!feedbackPage) {
+  if (!feedbackPageData) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center text-center">
         <div className="p-8 bg-red-50 rounded-lg shadow-md">
@@ -86,13 +82,14 @@ export default function FeedbackPageComponent() {
       <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-3">
-            {feedbackPage.title} <ChartBar className="w-8 h-8 text-blue-500" />
+            {feedbackPageData.title}{" "}
+            <ChartBar className="w-8 h-8 text-blue-500" />
           </h1>
           <CopyLink text={window.location.href.replace("feedbacks", "f")} />
         </div>
 
         <p className="text-gray-600 mb-6 leading-relaxed">
-          {feedbackPage.description}
+          {feedbackPageData.description}
         </p>
 
         <div className="border-t pt-6 dark:bg-gray-800">
@@ -100,8 +97,8 @@ export default function FeedbackPageComponent() {
             <MessageCircle className="w-6 h-6 text-blue-500" />
             All Received Feedbacks
           </h2>
-
-          {!feedbackPage.feedbacks || feedbackPage.feedbacks.length === 0 ? (
+          {!feedbackPageData.feedbacks ||
+          feedbackPageData.feedbacks.length === 0 ? (
             <div className="text-center bg-gray-50 p-8 rounded-lg">
               <p className="text-gray-500 text-lg flex items-center justify-center gap-2">
                 No feedbacks received yet. Share your feedback page to get
@@ -110,7 +107,7 @@ export default function FeedbackPageComponent() {
             </div>
           ) : (
             <div className="space-y-5 dark:bg-gray-900">
-              {feedbackPage.feedbacks.map((feedback, index) => (
+              {feedbackPageData.feedbacks.map((feedback, index) => (
                 <div
                   key={index}
                   className="bg-gray-50  dark:bg-gray-800 p-5 rounded-lg shadow-sm hover:shadow-md transition-shadow"
@@ -119,13 +116,11 @@ export default function FeedbackPageComponent() {
                     <div key={idx} className="mb-3">
                       <p className="font-medium flex items-center gap-2 text-gray-700">
                         {
-                          feedbackPage.customQuestions.find(
+                          feedbackPageData.customQuestions.find(
                             (q) => q.id === answer.questionId
                           )?.question
                         }
-                        {answer.type === "rating" && (
-                          <Star className="w-5 h-5 text-yellow-500" />
-                        )}
+                        {answer.type === "rating" && "- Rating"}
                       </p>
                       {answer.type === "rating" ? (
                         <StarRating value={Number(answer.response)} preview />
