@@ -15,6 +15,7 @@ export interface NotificationDocument extends Document {
   message: string;
   redirectTo?: string;
   viewed: boolean;
+  isDeleted?: boolean;
   createdAt: Date;
 }
 
@@ -28,7 +29,8 @@ const NotificationSchema: Schema<NotificationDocument> = new Schema({
   message: { type: String, required: true },
   redirectTo: { type: String },
   viewed: { type: Boolean, default: false },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  isDeleted: { type: Boolean, default: false }
 });
 
 const NotificationModel =
