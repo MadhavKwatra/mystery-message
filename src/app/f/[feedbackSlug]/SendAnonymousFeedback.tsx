@@ -112,7 +112,9 @@ export default function SendAnonymousFeedback() {
         ([questionId, response]) => ({
           questionId,
           response,
-          type: typeof response === "number" ? "rating" : "text"
+          type: (typeof response === "number" ? "rating" : "text") as
+            | "text"
+            | "rating"
         })
       );
 
@@ -132,7 +134,14 @@ export default function SendAnonymousFeedback() {
         );
 
         console.log(response, "Fetch feedback data");
-        setFeedbackDetails(response.data?.feedbackData || null);
+        setFeedbackDetails(
+          response.data?.feedbackData
+            ? {
+                ...response.data?.feedbackData,
+                createdBy: response.data?.feedbackData.createdBy.toString()
+              }
+            : null
+        );
         toast({
           title: "Success",
           description: "Feedback form loaded successfully",
@@ -208,7 +217,7 @@ export default function SendAnonymousFeedback() {
     } catch (error) {
       console.error("Error in sending feedback", error);
 
-      const axiosError = error as AxiosError<ApiResponse<any>>;
+      const axiosError = error as AxiosError<ApiResponse>;
       const errorMessage = axiosError.response?.data.message;
 
       toast({
