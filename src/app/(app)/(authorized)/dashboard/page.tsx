@@ -17,6 +17,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Skeleton } from "@/components/ui/skeleton";
 import CopyLink from "@/components/CopyLink";
+import { pusherClient } from "@/lib/pusher/client";
 function DashboardPage() {
   // const socket = useMemo(() => {
   //   const socket = getSocket();
@@ -166,7 +167,34 @@ function DashboardPage() {
       setIsPageLoading(false);
     };
     fetchData();
-  }, [session, setValue, fetchAcceptMessage, fetchMessages]);
+
+    console.log("📡 Subscribing to:", `private-user-${session.user._id}`);
+    const channel = pusherClient.subscribe(`private-user-${session.user._id}`);
+
+    channel.bind("pusher:subscription_succeeded", () => {
+      console.log("✅ Subscription succeeded!");
+    });
+
+    channel.bind("pusher:subscription_error", (err: Error) => {
+      console.error("❌ Subscription error:", err);
+    });
+    channel.bind("new-message", (newMessage: Message) => {
+      setMessages((prev) => [newMessage, ...prev]); // Add new message
+      console.log("💬 New Message Received:", newMessage);
+
+      toast({
+        title: "New message received!",
+        description: "You have a new message from an anonymous user.",
+        duration: 2000,
+        variant: "default"
+      });
+    });
+
+    return () => {
+      channel.unbind_all();
+      channel.unsubscribe();
+    };
+  }, [session, setValue, fetchAcceptMessage, fetchMessages, toast]);
 
   const handleSwitchChange = async () => {
     try {

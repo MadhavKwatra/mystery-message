@@ -1,6 +1,9 @@
 import dbConnect from "@/lib/dbConnect";
+import { getPusherInstance } from "@/lib/pusher/server";
 import UserModel from "@/model/User";
 import { Message } from "@/model/User";
+import mongoose from "mongoose";
+const pusherServer = getPusherInstance();
 
 export async function POST(req: Request) {
   await dbConnect();
@@ -23,10 +26,19 @@ export async function POST(req: Request) {
       );
     }
 
-    const newMessage = { content, createdAt: new Date() };
+    const newMessage = {
+      _id: new mongoose.Types.ObjectId(),
+      content,
+      createdAt: new Date()
+    };
     user.messages.push(newMessage as Message);
     await user.save();
-
+    // Trigger Pusher event to user who receives anonymous message
+    await pusherServer.trigger(
+      `private-user-${user._id}`,
+      "new-message",
+      newMessage
+    );
     return Response.json(
       { success: true, message: "Message sent successfully" },
       { status: 200 }
