@@ -65,8 +65,6 @@ const ShareableLinkModal = ({
   onOpenChange,
   shareableLink
 }: ShareableLinkModalProps) => {
-  const baseUrl = `${window.location.protocol}//${window.location.host}`;
-  const feedbackUrl = `${baseUrl}/${shareableLink}`;
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -77,8 +75,13 @@ const ShareableLinkModal = ({
           </DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-2 mt-4">
-          <Input value={feedbackUrl} readOnly />
-          <CopyLink text={feedbackUrl} />
+          <Input
+            value={`${window.location.protocol}//${window.location.host}/${shareableLink}`}
+            readOnly
+          />
+          <CopyLink
+            text={`${window.location.protocol}//${window.location.host}/${shareableLink}`}
+          />
         </div>
         {/* <div className="mt-4">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
