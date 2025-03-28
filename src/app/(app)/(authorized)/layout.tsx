@@ -1,12 +1,14 @@
 "use client";
 
 import Sidebar, { SidebarItem } from "@/components/Sidebar";
+import { useNotifications } from "@/hooks/useNotifications";
 import {
   LayoutDashboard,
   Settings,
   ChartColumn,
   MessageCircleQuestion
 } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 export default function AuthorizedLayout({
   children
@@ -15,7 +17,24 @@ export default function AuthorizedLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-
+  const { data: session } = useSession();
+  const { notifications } = useNotifications(session?.user._id as string);
+  let isNewMessage = false;
+  let isNewFeedback = false;
+  if (notifications && notifications.length > 0) {
+    isNewMessage =
+      notifications.findIndex(
+        (notification) =>
+          notification.viewed === false &&
+          notification.type === "anonymous-message"
+      ) !== -1;
+    isNewFeedback =
+      notifications.findIndex(
+        (notification) =>
+          notification.viewed === false &&
+          notification.type === "anonymous-feedback"
+      ) !== -1;
+  }
   return (
     <div className="flex">
       <Sidebar>
@@ -26,6 +45,7 @@ export default function AuthorizedLayout({
           icon={<LayoutDashboard size={20} />}
           text="Dashboard"
           active={pathname === "/dashboard"}
+          alert={isNewMessage}
         />
         <SidebarItem
           handleClick={() => {
@@ -40,6 +60,7 @@ export default function AuthorizedLayout({
             router.push("/feedbacks");
           }}
           icon={<MessageCircleQuestion size={20} />}
+          alert={isNewFeedback}
           text="Feedbacks"
           active={pathname === "/feedbacks"}
         />
