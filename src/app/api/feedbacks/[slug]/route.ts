@@ -6,14 +6,24 @@ import { authOptions } from "../../auth/[...nextauth]/options";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  props: { params: Promise<{ slug: string }> }
 ) {
   try {
+    const params = await props.params;
+    const { slug } = params;
     await dbConnect();
+
+    if (!slug) {
+      return Response.json(
+        { success: false, message: "Slug missing" },
+        { status: 400 }
+      );
+    }
+
     const session = await getServerSession(authOptions);
     const isAnonymousSender = !session || !session.user;
 
-    const feedback = await FeedbackPage.findOne({ slug: params.slug }).lean();
+    const feedback = await FeedbackPage.findOne({ slug }).lean();
     if (!feedback) {
       return NextResponse.json(
         { success: false, message: "Not found" },
