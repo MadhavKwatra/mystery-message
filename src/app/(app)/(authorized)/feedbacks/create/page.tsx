@@ -65,6 +65,12 @@ const ShareableLinkModal = ({
   onOpenChange,
   shareableLink
 }: ShareableLinkModalProps) => {
+  const baseUrl =
+    process.env.NODE_ENV === "production"
+      ? `https://${process.env.VERCEL_URL}`
+      : process.env.VERCEL_URL;
+  const feedbackUrl = `${baseUrl}/${shareableLink}`;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -75,13 +81,8 @@ const ShareableLinkModal = ({
           </DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-2 mt-4">
-          <Input
-            value={`${window.location.protocol}//${window.location.host}/${shareableLink}`}
-            readOnly
-          />
-          <CopyLink
-            text={`${window.location.protocol}//${window.location.host}/${shareableLink}`}
-          />
+          <Input value={feedbackUrl} readOnly />
+          <CopyLink text={feedbackUrl} />
         </div>
         {/* <div className="mt-4">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
