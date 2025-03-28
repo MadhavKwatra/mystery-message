@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
 import { getPusherInstance } from "@/lib/pusher/server";
+import NotificationModel from "@/model/Notification";
 import UserModel from "@/model/User";
 import { Message } from "@/model/User";
 import mongoose from "mongoose";
@@ -38,6 +39,22 @@ export async function POST(req: Request) {
       `private-user-${user._id}`,
       "new-message",
       newMessage
+    );
+
+    // Create notification
+    const notification = await NotificationModel.create({
+      userId: user._id,
+      message: "Someone sent an Anonymous Message",
+      type: "anonymous-message",
+      redirectTo: "/dashboard",
+      viewed: false
+    });
+
+    // Trigger Pusher event
+    await pusherServer.trigger(
+      `private-user-${user._id}-notifications`,
+      "new-notification",
+      notification
     );
     return Response.json(
       { success: true, message: "Message sent successfully" },

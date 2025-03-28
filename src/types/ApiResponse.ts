@@ -1,4 +1,5 @@
 import { FeedbackPage } from "@/model/FeedbackPage";
+import { Notification } from "@/model/Notification";
 import { Message } from "@/model/User";
 
 // Defining api responses
@@ -18,6 +19,7 @@ export interface ApiResponse {
   shareableLink?: string;
   feedbacksData?: Array<FeedbackPage>;
   feedbackData?: FeedbackPage;
+  notificationData?: Array<Notification>;
 }
 
 export interface DashboardData {

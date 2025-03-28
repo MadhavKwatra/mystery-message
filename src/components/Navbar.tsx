@@ -30,6 +30,7 @@ import {
 } from "./ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
+import { NotificationsDropdown } from "./NotificationDropdown";
 
 function Navbar() {
   const router = useRouter();
@@ -43,7 +44,6 @@ function Navbar() {
     avatar_uri = getOptimizedAvatarImageUrl(avatar_uri);
   }
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   // Prevent background scroll when menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -83,6 +83,7 @@ function Navbar() {
               <span className="mr-4 font-bold">
                 Welcome, {user?.username || user?.email}
               </span>
+              {user?._id && <NotificationsDropdown userId={user?._id} />}
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Avatar className="w-10 h-10 border  border-gray-300 dark:border-gray-700">

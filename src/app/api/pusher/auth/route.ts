@@ -21,7 +21,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // const { socketId, channelName } = await req.json();
     const formData = await req.formData();
     const socketId = formData.get("socket_id") as string;
     const channelName = formData.get("channel_name") as string;
@@ -35,7 +34,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Ensure user can only subscribe to their own channel
-    if (channelName !== `private-user-${session.user._id}`) {
+    if (!channelName.includes(`private-user-${session.user._id}`)) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
     const authResponse = pusherServer.authorizeChannel(socketId, channelName);
