@@ -24,7 +24,7 @@ const feedbackTypes = [
     answers: [
       "The collaboration between design and development teams was exceptional.",
       "We need more clarity on requirements before starting development.",
-      4
+      "4"
     ]
   },
   {
@@ -37,7 +37,7 @@ const feedbackTypes = [
     answers: [
       "I've significantly improved my presentation skills and technical documentation.",
       "I'd like to focus on developing my leadership and mentoring abilities.",
-      3
+      "3"
     ]
   },
   {
@@ -50,7 +50,7 @@ const feedbackTypes = [
     answers: [
       "The dashboard analytics and real-time notifications are incredibly useful.",
       "I'd love to see integration with our project management tools.",
-      5
+      "5"
     ]
   },
   {
@@ -63,7 +63,7 @@ const feedbackTypes = [
     answers: [
       "The networking opportunities and quality of speakers were outstanding.",
       "Consider adding more interactive workshops and breakout sessions.",
-      4
+      "4"
     ]
   },
   {
@@ -76,7 +76,7 @@ const feedbackTypes = [
     answers: [
       "The practical examples and real-world applications were incredibly helpful.",
       "More advanced topics and case studies would enhance the learning experience.",
-      5
+      "5"
     ]
   }
 ];
@@ -157,7 +157,8 @@ export const NewFeatureSection = () => {
                                           key={rating}
                                           className={cn(
                                             "h-8 w-8 transition-colors",
-                                            rating <= feedback.answers[2]
+                                            rating <=
+                                              Number(feedback.answers[2])
                                               ? "fill-yellow-500 text-yellow-500"
                                               : "text-gray-300 dark:text-gray-600"
                                           )}
