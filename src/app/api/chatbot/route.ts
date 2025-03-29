@@ -29,14 +29,14 @@ export async function POST(req: Request) {
       return Response.json({ success: true, response: faqMatch.answer });
     }
 
-    const prompt = `You are a chatbot for an anonymous messaging platform. Answer user queries conversationally and provide helpful responses. If a user asks about the platform, use the following FAQs for reference:
+    const prompt = `You are a chatbot for an anonymous messaging platform called Spill It. Answer user queries concisely and helpfully. If a user asks about the platform, use the following FAQs for reference:
     ${faqItems.map((faq) => `Q: ${faq.question}\nA: ${faq.answer}`).join("\n")}
-    If the question is unrelated, respond in a friendly and engaging way.`;
+    Keep responses brief and engaging. If the question is unrelated, reply in a friendly, lighthearted way.`;
 
     const result = streamText({
       model: google("gemini-2.0-flash-exp"),
       prompt: `${prompt}\nUser: ${message}\nChatbot:`,
-      maxTokens: 400,
+      maxTokens: 200,
       temperature: 0.7,
       seed: Math.floor(Math.random() * 1000)
     });

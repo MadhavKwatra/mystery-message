@@ -32,7 +32,7 @@ type Message = z.infer<typeof MessageSchema>;
 // Example questions
 const exampleQuestions = [
   "What can you help me with?",
-  "How does AI work?",
+  "How does this work?",
   "Tell me a fun fact"
 ];
 
@@ -242,9 +242,24 @@ export default function Chatbot() {
 
                     {messages.length === 0 && !isLoading && (
                       <div className="flex flex-col gap-2">
-                        <p className="text-center text-gray-400">
-                          Try asking me something like:
-                        </p>
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5 }}
+                          className="text-center text-gray-400"
+                        >
+                          <p className="text-lg font-medium">
+                            👋 Hey there! Welcome to{" "}
+                            <span className="font-bold text-white">
+                              {APP_NAME}
+                            </span>
+                            .
+                          </p>
+                          <p className="mt-1">
+                            You can ask me anything about the platform like
+                          </p>
+                        </motion.div>
+
                         {exampleQuestions.map((question, index) => (
                           <motion.button
                             key={index}

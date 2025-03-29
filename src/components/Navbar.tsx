@@ -15,7 +15,8 @@ import {
   LayoutDashboard,
   LogOut,
   ChartColumn,
-  MessageCircleQuestion
+  MessageCircleQuestion,
+  VenetianMask
 } from "lucide-react";
 import { APP_NAME } from "@/config/config";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -74,7 +75,11 @@ function Navbar() {
             />
           )}
         </Button>
-        <Link href="/" className="text-xl font-bold md:mb-0">
+        <Link
+          href="/"
+          className="text-xl font-bold md:mb-0 flex items-center gap-2"
+        >
+          <VenetianMask className="h-10 w-10 text-[#a855f7]" />
           {APP_NAME}
         </Link>
         {/* Notification icon on right side for mobile */}
