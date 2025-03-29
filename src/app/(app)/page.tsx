@@ -1,4 +1,3 @@
-// Landing page at /
 "use client";
 
 import {
@@ -9,13 +8,17 @@ import {
   CardTitle
 } from "@/components/ui/card";
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem
-} from "@/components/ui/carousel";
-import messages from "@/messages.json";
-import { Mail, MoveRight, Share, User } from "lucide-react";
-import Autoplay from "embla-carousel-autoplay";
+  ChartColumn,
+  Facebook,
+  GraduationCap,
+  Instagram,
+  Mail,
+  MessageCircleQuestion,
+  ShieldCheck,
+  Twitter,
+  Users2,
+  Video
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import {
@@ -27,24 +30,9 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { APP_NAME } from "@/config/config";
 import { faqItems } from "@/lib/faqs";
-
-const steps = [
-  {
-    icon: <User className="w-8 h-8 text-blue-500 dark:text-blue-300" />,
-    title: "Create Your Account",
-    description: "Sign up with email/username, or using your socials."
-  },
-  {
-    icon: <Share className="w-8 h-8 text-green-500 dark:text-green-300" />,
-    title: "Share Your Link",
-    description: "Share your unique link with others on social media."
-  },
-  {
-    icon: <Mail className="w-8 h-8 text-purple-500 dark:text-purple-300" />,
-    title: "Receive Anonymous Messages",
-    description: "Messages are delivered to your inbox."
-  }
-];
+import { NewFeatureSection } from "@/components/NewFeatureSection";
+import { HowItWorksSection } from "@/components/HowItWorks";
+import { HeroSection } from "@/components/HeroSection";
 
 const testimonials = [
   {
@@ -109,80 +97,88 @@ export default function Home() {
   const currentYear = new Date().getFullYear();
   return (
     <>
-      {/* Main content */}
-      <main className="flex-grow flex flex-col items-center justify-center px-4 md:px-24 py-12 dark:bg-gray-800 bg-gray-50 ">
-        <section className="text-center mb-8 md:mb-12  max-w-3xl ">
-          <h1 className="text-4xl sm:text-6xl font-bold mb-6">
-            {"Dive into the World of "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">
-              Anonymous Messages
-            </span>
-          </h1>
-          <p className="mt-3 md:mt-4 text-base md:text-lg dark:text-gray-200 text-gray-700 mb-8">
-            Share your thoughts freely and securely with anyone, anywhere.
-          </p>
-          <Link href={"/sign-up"}>
-            <Button className="text-xl my-10 p-6 font-semibold transition-colors bg-gradient-to-r from-purple-500 to-pink-500 hover:scale-110 dark:text-white">
-              Get started <MoveRight />
-            </Button>
-          </Link>
-        </section>
-
-        {/* Carousel for Messages */}
-        <Carousel
-          plugins={[Autoplay({ delay: 2000 })]}
-          className="w-full max-w-lg md:max-w-xl "
-        >
-          <CarouselContent>
-            {messages.map((message, index) => (
-              <CarouselItem key={index} className="p-4 ">
-                <Card className="rounded-3xl dark:bg-gray-900">
-                  <CardHeader>
-                    <CardTitle>{message.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex flex-col md:flex-row items-start space-y-2 md:space-y-0 md:space-x-4 ">
-                    <Mail className="flex-shrink-0" />
-                    <div>
-                      <p>{message.content}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {message.received}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-      </main>
-      {/* How It Works */}
-      <section className=" bg-gray-50 dark:bg-gray-800 py-12">
-        <h1 className="text-3xl md:text-5xl font-bold text-center mb-8 ">
-          How it works!
-        </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mx-auto container px-4">
-          {steps.map((step, index) => (
-            <Card
-              key={index}
-              className="hover:shadow-lg transition-shadow basis-full h-54 border rounded-3xl dark:bg-gray-900"
-            >
-              <CardHeader>
-                <div className="flex items-center justify-center">
-                  <div className="p-3 bg-blue-50 rounded-full dark:bg-blue-900">
-                    {step.icon}
-                  </div>
+      <HeroSection />
+      <HowItWorksSection />
+      <NewFeatureSection />
+      {/* Features */}
+      <section className="py-16 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900 dark:to-pink-900">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-5xl font-bold text-center mb-12">
+            Other Features
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Anonymous Messaging */}
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg transform transition-all duration-300 hover:-translate-y-2">
+              <div className="flex items-start mb-4">
+                <div className="bg-purple-100 dark:bg-purple-900 p-3 rounded-lg mr-4">
+                  <Mail className="w-8 h-8 text-purple-600 dark:text-purple-300" />
                 </div>
-              </CardHeader>
-              <CardContent className="text-center">
-                <CardTitle className="text-xl mb-2 dark:text-white">
-                  {index + 1}. {step.title}
-                </CardTitle>
-                <CardDescription className="text-gray-600 dark:text-gray-400">
-                  {step.description}
-                </CardDescription>
-              </CardContent>
-            </Card>
-          ))}
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">
+                    Anonymous Messaging
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Send private messages without revealing your identity.
+                    Perfect for honest communication.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Anonymous Feedback */}
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg transform transition-all duration-300 hover:-translate-y-2">
+              <div className="flex items-start mb-4">
+                <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-lg mr-4">
+                  <MessageCircleQuestion className="w-8 h-8 text-blue-600 dark:text-blue-300" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">
+                    Anonymous Feedback
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Collect honest feedback from team members, friends, or
+                    audience without bias.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Analytics Dashboard */}
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg transform transition-all duration-300 hover:-translate-y-2">
+              <div className="flex items-start mb-4">
+                <div className="bg-green-100 dark:bg-green-900 p-3 rounded-lg mr-4">
+                  <ChartColumn className="w-8 h-8 text-green-600 dark:text-green-300" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">
+                    Insightful Analytics
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Track message trends, engagement patterns, and feedback
+                    themes through intuitive visualizations.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Privacy & Security */}
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg transform transition-all duration-300 hover:-translate-y-2">
+              <div className="flex items-start mb-4">
+                <div className="bg-red-100 dark:bg-red-900 p-3 rounded-lg mr-4">
+                  <ShieldCheck className="w-8 h-8 text-red-600 dark:text-red-300" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">
+                    Privacy & Security
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Your data is encrypted and protected. We prioritize user
+                    privacy and security.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
       {/* Testimonials */}
@@ -195,16 +191,18 @@ export default function Home() {
             {testimonials.map((testimonial, index) => (
               <Card
                 key={index}
-                className={`hover:shadow-lg transition-shadow h-full dark:bg-gray-900 ${index % 2 == 0 ? `hidden sm:block` : ""}`}
+                className={`hover:shadow-lg transition-shadow h-full dark:bg-gray-900 ${index % 2 == 0 ? `hidden sm:block` : ""} border border-gray-200 dark:border-gray-700`}
               >
                 <CardHeader>
                   <div className="flex items-center space-x-4">
-                    <Avatar>
+                    <Avatar className="border-2 border-purple-200 dark:border-purple-900">
                       <AvatarImage
                         src={testimonial.avatar}
                         alt={testimonial.name}
                       />
-                      <AvatarFallback>{testimonial.name[0]}</AvatarFallback>
+                      <AvatarFallback className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+                        {testimonial.name}
+                      </AvatarFallback>
                     </Avatar>
                     <div>
                       <CardTitle className="text-lg dark:text-white">
@@ -217,12 +215,44 @@ export default function Home() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 dark:text-gray-400">
+                  <p className="text-gray-600 dark:text-gray-400 relative pl-4">
                     {testimonial.feedback}
+                    <span className="absolute left-1 top-0 text-sm text-purple-500">
+                      &quot;
+                    </span>
+                    <span className="text-sm text-purple-500"> &quot;</span>
                   </p>
                 </CardContent>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA section */}
+      <section className="py-16 bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            Ready to embrace honest communication?
+          </h2>
+          <p className="text-xl mb-8 max-w-2xl mx-auto">
+            Join thousands of users who&apos;ve discovered the power of
+            anonymous messaging and feedback.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/sign-up">
+              <Button className="text-lg px-8 py-6 bg-white text-purple-700 hover:bg-gray-100 hover:scale-105 transition-all">
+                Get Started Free
+              </Button>
+            </Link>
+            <Link href="/features">
+              <Button
+                variant="outline"
+                className="text-lg px-8 py-6 border-white dark:text-white hover:bg-white/10 hover:scale-105 transition-all text-black"
+              >
+                Learn More
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -250,8 +280,158 @@ export default function Home() {
           </Accordion>
         </div>
       </section>
-      <footer className="text-center p-4 md:p-6 bg-gray-900 text-white">
-        © {currentYear} {APP_NAME}. All rights reserved.
+
+      {/* Enhanced footer with links and newsletter */}
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="md:col-span-1">
+              <h3 className="text-xl font-bold mb-4">{APP_NAME}</h3>
+              <p className="text-gray-400 mb-4">
+                Share your thoughts freely and securely with anyone, anywhere.
+              </p>
+              <div className="flex space-x-4">
+                <a
+                  href="#"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <Twitter className="h-5 w-5" />
+                </a>
+                <a
+                  href="#"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <Facebook className="h-5 w-5" />
+                </a>
+                <a
+                  href="#"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <Instagram className="h-5 w-5" />
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-lg font-semibold mb-4">Features</h4>
+              <ul className="space-y-2">
+                <li>
+                  <a
+                    href="#"
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    Anonymous Messages
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    Feedback System
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    Analytics
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    Privacy
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-lg font-semibold mb-4">Company</h4>
+              <ul className="space-y-2">
+                <li>
+                  <a
+                    href="#"
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    About Us
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    Blog
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    Careers
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    Contact
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-lg font-semibold mb-4">Stay Updated</h4>
+              <p className="text-gray-400 mb-4">
+                Subscribe to our newsletter for the latest updates and features.
+              </p>
+              <div className="flex">
+                <input
+                  type="email"
+                  placeholder="Your email"
+                  className="px-4 py-2 w-full rounded-l-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-900 dark:text-white"
+                />
+                <button className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-r-md transition-colors">
+                  Subscribe
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p>
+              © {currentYear} {APP_NAME}. All rights reserved.
+            </p>
+            <div className="flex space-x-6 mt-4 md:mt-0">
+              <a
+                href="#"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                Privacy Policy
+              </a>
+              <a
+                href="#"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                Terms of Service
+              </a>
+              <a
+                href="#"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                Cookie Policy
+              </a>
+            </div>
+          </div>
+        </div>
       </footer>
     </>
   );
