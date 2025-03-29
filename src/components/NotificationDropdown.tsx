@@ -71,7 +71,7 @@ export function NotificationsDropdown({ userId }: NotificationsDropdownProps) {
           {unreadCount > 0 && !isLoading && (
             <Badge
               variant="destructive"
-              className="absolute -top-2 -right-2 px-1.5 py-0.5 text-xs"
+              className="absolute -top-1 -right-0.5 px-1.5 py-0.5  text-xs"
             >
               {unreadCount}
             </Badge>

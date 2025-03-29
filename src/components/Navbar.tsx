@@ -77,6 +77,10 @@ function Navbar() {
         <Link href="/" className="text-xl font-bold md:mb-0">
           {APP_NAME}
         </Link>
+        {/* Notification icon on right side for mobile */}
+        <div className="md:hidden">
+          {session && user?._id && <NotificationsDropdown userId={user?._id} />}
+        </div>
         <div className="hidden md:flex gap-5 items-center">
           {session ? (
             <>
