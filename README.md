@@ -89,3 +89,10 @@ Post about it on linkedIn
 Make dummy wrapper till ai comes, add image pasting in chatbox like chatgpt
 
 add caching to landing page analytics
+
+TIps from PC side
+session bounce rate logic
+Final Tips for Efficient Analytics
+✅ Index Fields: Add indexes to createdAt, ip, userAgent, and trafficSource.
+✅ Use Caching: Cache frequent queries with Redis to reduce DB load.
+✅ Batch Processing: Run heavy aggregations in the background via a cron job.
