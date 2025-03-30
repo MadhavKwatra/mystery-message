@@ -97,7 +97,6 @@ export default function Home() {
     <>
       <HeroSection />
       <HowItWorksSection />
-      <AnalyticsSection />
       <NewFeatureSection />
       {/* Features */}
       <section className="py-16 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900 dark:to-pink-900">
@@ -227,7 +226,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+      <AnalyticsSection />
       {/* CTA section */}
       <section className="py-16 bg-gradient-to-r from-purple-500 to-pink-500 text-white">
         <div className="container mx-auto px-4 text-center">
