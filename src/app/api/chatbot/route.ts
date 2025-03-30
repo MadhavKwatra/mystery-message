@@ -7,9 +7,6 @@ export const maxDuration = 30;
 export async function POST(req: Request) {
   try {
     const { prompt: message } = await req.json();
-    // const body = await req.json();
-    // console.log(body, " i nchatbot")
-    // const { message } = body;
 
     // Validate message input
     if (!message || typeof message !== "string") {
@@ -19,7 +16,6 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log(message, req.json(), "HE YDLFLSDFJ");
     // Check if the message matches a FAQ question
     const faqMatch = faqItems.find((faq) =>
       message.toLowerCase().includes(faq.question.toLowerCase())

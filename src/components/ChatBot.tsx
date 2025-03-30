@@ -371,12 +371,12 @@ export default function Chatbot() {
           >
             <div className="relative flex h-10 w-10 items-center justify-center">
               <BotMessageSquare className="h-6 w-6 text-white" />
-              <motion.span
+              {/* <motion.span
                 className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-blue-500"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 1, type: "spring" }}
-              />
+              /> */}
             </div>
           </motion.button>
         )}
