@@ -69,3 +69,23 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ### Done
 
 - [x] Fixed same suggested messags from Gemini AI
+
+TODO
+Setup prod db for spill it
+Toasts for login success and others
+feedback bakend logic and all are pending
+
+Real time Features for Next js
+
+Prisma with next js
+
+https://christianflor.es/ CREIDIT FOR ARTICLE
+
+TODOs
+Real time messages and data for landing page
+
+Post about it on linkedIn
+
+Make dummy wrapper till ai comes, add image pasting in chatbox like chatgpt
+
+add caching to landing page analytics

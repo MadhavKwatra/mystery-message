@@ -7,6 +7,8 @@ import { APP_NAME } from "@/config/config";
 import { ThemeProvider } from "next-themes";
 import { Analytics } from "@vercel/analytics/react";
 import Chatbot from "@/components/ChatBot";
+// import "odometer/themes/odometer-theme-minimal.css";
+// import "@/styles/odometer.css"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

@@ -33,6 +33,10 @@ import { faqItems } from "@/lib/faqs";
 import { NewFeatureSection } from "@/components/NewFeatureSection";
 import { HowItWorksSection } from "@/components/HowItWorks";
 import { HeroSection } from "@/components/HeroSection";
+import LiveAnalytics from "@/components/LiveAnalytics";
+import AnalyticsSection from "@/components/AnalyticsSectionLandingPage";
+import ReactSpringAnalytics from "@/components/ReactSpringAnalytics";
+import OdometerAnalytics from "@/components/OdometerAnalyticsVercel";
 
 const testimonials = [
   {
@@ -99,6 +103,11 @@ export default function Home() {
     <>
       <HeroSection />
       <HowItWorksSection />
+      <LiveAnalytics />
+      {/* <AnalyticsSection/> */}
+      <AnalyticsSection />
+      {/* <OdometerAnalytics/> */}
+      <ReactSpringAnalytics />
       <NewFeatureSection />
       {/* Features */}
       <section className="py-16 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900 dark:to-pink-900">
