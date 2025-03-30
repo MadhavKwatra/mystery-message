@@ -24,6 +24,7 @@ import { profileSchema } from "@/schemas/profileSchema";
 import { Loader2, UserRound } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { useDebounceCallback } from "usehooks-ts";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ProfileSettingsPage = () => {
   const pictureInputRef = useRef<HTMLInputElement>(null); // Ref for file input
@@ -257,12 +258,20 @@ const ProfileSettingsPage = () => {
 
   if (!session || !session.user) {
     return (
-      <div className="text-center text-lg font-medium mt-10">Please login</div>
+      <div className="text-center text-lg font-medium mt-10">
+        <Loader2 className="animate-spin mx-auto" size={25} />
+      </div>
     );
   }
   if (!initialDataLoaded) {
-    return <div>Loading...</div>;
-    // TODO: Add a Skeleton Loading
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-10 w-2/3" />
+        <Skeleton className="h-32 w-32 rounded-full" />
+        <Skeleton className="h-10 w-full" />
+        <Skeleton className="h-10 w-1/2" />
+      </div>
+    );
   }
 
   return (

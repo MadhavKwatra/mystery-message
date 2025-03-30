@@ -10,14 +10,11 @@ import {
 import {
   ChartColumn,
   Facebook,
-  GraduationCap,
   Instagram,
   Mail,
   MessageCircleQuestion,
   ShieldCheck,
-  Twitter,
-  Users2,
-  Video
+  Twitter
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -33,6 +30,7 @@ import { faqItems } from "@/lib/faqs";
 import { NewFeatureSection } from "@/components/NewFeatureSection";
 import { HowItWorksSection } from "@/components/HowItWorks";
 import { HeroSection } from "@/components/HeroSection";
+import AnalyticsSection from "@/components/AnalyticsSectionLandingPage";
 
 const testimonials = [
   {
@@ -102,7 +100,7 @@ export default function Home() {
       <NewFeatureSection />
       {/* Features */}
       <section className="py-16 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900 dark:to-pink-900">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 max-w-5xl">
           <h2 className="text-3xl md:text-5xl font-bold text-center mb-12">
             Other Features
           </h2>
@@ -183,7 +181,7 @@ export default function Home() {
       </section>
       {/* Testimonials */}
       <section className="py-12 bg-gray-50 dark:bg-gray-800">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 max-w-7xl">
           <h2 className="text-3xl font-bold text-center mb-8 dark:text-white">
             What Our Users (Imaginary) Say
           </h2>
@@ -228,7 +226,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+      <AnalyticsSection />
       {/* CTA section */}
       <section className="py-16 bg-gradient-to-r from-purple-500 to-pink-500 text-white">
         <div className="container mx-auto px-4 text-center">
@@ -283,7 +281,7 @@ export default function Home() {
 
       {/* Enhanced footer with links and newsletter */}
       <footer className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 max-w-6xl">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="md:col-span-1">
               <h3 className="text-xl font-bold mb-4">{APP_NAME}</h3>

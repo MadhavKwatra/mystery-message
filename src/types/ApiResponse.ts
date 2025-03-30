@@ -20,6 +20,11 @@ export interface ApiResponse {
   feedbacksData?: Array<FeedbackPage>;
   feedbackData?: FeedbackPage;
   notificationData?: Array<Notification>;
+  analyticsData?: {
+    totalUsers: number;
+    totalMessages: number;
+    totalFeedbacks: number;
+  };
 }
 
 export interface DashboardData {
