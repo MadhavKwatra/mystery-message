@@ -56,6 +56,10 @@ export async function POST(req: Request) {
       "new-notification",
       notification
     );
+
+    await pusherServer.trigger(`analytics-channel`, "stats-update", {
+      totalMessages: 1
+    });
     return Response.json(
       { success: true, message: "Message sent successfully" },
       { status: 200 }

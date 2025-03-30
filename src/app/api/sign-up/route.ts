@@ -4,6 +4,8 @@ import UserModel from "@/model/User";
 import bcrypt from "bcryptjs";
 
 import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
+import { getPusherInstance } from "@/lib/pusher/server";
+const pusherServer = getPusherInstance();
 
 export async function POST(req: Request) {
   await dbConnect();
@@ -12,7 +14,7 @@ export async function POST(req: Request) {
     const { email, username, password } = await req.json();
     const existingUserVerifiedByUsername = await UserModel.findOne({
       username,
-      isVerified: true,
+      isVerified: true
     });
 
     if (existingUserVerifiedByUsername) {
@@ -23,7 +25,7 @@ export async function POST(req: Request) {
     }
 
     const existingUserByEmail = await UserModel.findOne({
-      email,
+      email
     });
     const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -33,7 +35,7 @@ export async function POST(req: Request) {
         return Response.json(
           {
             success: false,
-            message: "User already exists with this email",
+            message: "User already exists with this email"
           },
           { status: 400 }
         );
@@ -62,7 +64,7 @@ export async function POST(req: Request) {
         verifyCodeExpiry: expiryDate,
         isVerified: false,
         isAcceptingMessage: true,
-        messages: [],
+        messages: []
       });
 
       await newUser.save();
@@ -79,16 +81,19 @@ export async function POST(req: Request) {
       return Response.json(
         {
           success: false,
-          message: emailResponse.message,
+          message: emailResponse.message
         },
         { status: 500 }
       );
     }
 
+    await pusherServer.trigger(`analytics-channel`, "stats-update", {
+      totalUsers: 1
+    });
     return Response.json(
       {
         success: true,
-        message: "User registered successfully. Please verify your email.",
+        message: "User registered successfully. Please verify your email."
       },
       { status: 201 }
     );

@@ -4,7 +4,8 @@ import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
-
+import { getPusherInstance } from "@/lib/pusher/server";
+const pusherServer = getPusherInstance();
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -74,6 +75,9 @@ export const authOptions: NextAuthOptions = {
             });
             await newUser.save();
             existingUser = newUser;
+            await pusherServer.trigger(`analytics-channel`, "stats-update", {
+              totalUsers: 1
+            });
           }
 
           user._id = existingUser._id?.toString();
