@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Activity, Loader2, MessageCircle, Users } from "lucide-react";
 import { useSpring, animated, config } from "@react-spring/web";
 import axios from "axios";
@@ -62,18 +62,6 @@ export default function AnalyticsSection() {
 
     fetchAnalytics();
 
-    // making it cool with real-time updates with random increases
-    const interval = setInterval(() => {
-      if (!analyticsData) return;
-
-      setAnalyticsData((prev) => ({
-        totalUsers: (prev?.totalUsers || 0) + generateRandomIncrease(2, 10),
-        totalMessages:
-          (prev?.totalMessages || 0) + generateRandomIncrease(10, 50),
-        totalFeedbacks:
-          (prev?.totalFeedbacks || 0) + generateRandomIncrease(2, 20)
-      }));
-    }, 5000);
     console.log("📡 Subscribing to:", `analyticsChannel`);
     const channel = pusherClient.subscribe("analytics-channel");
 
@@ -99,9 +87,27 @@ export default function AnalyticsSection() {
     return () => {
       channel.unbind_all();
       channel.unsubscribe();
-      clearInterval(interval);
     };
   }, []);
+
+  useEffect(() => {
+    // making it cool with real-time updates with random increases
+    const interval = setInterval(() => {
+      if (!analyticsData) return;
+
+      setAnalyticsData((prev) => ({
+        totalUsers: (prev?.totalUsers || 0) + generateRandomIncrease(2, 10),
+        totalMessages:
+          (prev?.totalMessages || 0) + generateRandomIncrease(10, 50),
+        totalFeedbacks:
+          (prev?.totalFeedbacks || 0) + generateRandomIncrease(2, 20)
+      }));
+    }, 5000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [analyticsData]);
 
   // Card animations
   const cardProps = useSpring({
@@ -109,7 +115,6 @@ export default function AnalyticsSection() {
     to: { opacity: 1, transform: "translateY(0px)" },
     config: config.gentle
   });
-
   return (
     <section className="py-12 md:py-16 bg-gradient-to-b dark:from-gray-900 dark:to-gray-800 from-purple-100 to-pink-100 text-gray-800 dark:text-white relative overflow-hidden ">
       <div className="container max-w-5xl mx-auto px-4">
@@ -155,8 +160,8 @@ export default function AnalyticsSection() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
             {/* Total Users */}
             <animated.div
-              style={{ ...cardProps }}
-              className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-xl p-8 shadow-lg border border-purple-500/20 hover:border-purple-500/50 transition-all"
+              style={cardProps}
+              className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-xl p-8 shadow-lg border border-purple-500/20 hover:border-purple-500/50 transition-all "
             >
               <div className="flex items-center justify-center mb-4">
                 <div className="dark:bg-purple-900/50 bg-purple-900/90 p-4 rounded-full">
@@ -176,7 +181,7 @@ export default function AnalyticsSection() {
 
             {/* Total Messages */}
             <animated.div
-              style={{ ...cardProps }}
+              style={cardProps}
               className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-xl p-8 shadow-lg border border-blue-500/20 hover:border-blue-500/50 transition-all"
             >
               <div className="flex items-center justify-center mb-4">
@@ -198,7 +203,7 @@ export default function AnalyticsSection() {
 
             {/* Total Feedbacks */}
             <animated.div
-              style={{ ...cardProps }}
+              style={cardProps}
               className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-xl p-8 shadow-lg border border-pink-500/20 hover:border-pink-500/50 transition-all"
             >
               <div className="flex items-center justify-center mb-4">
