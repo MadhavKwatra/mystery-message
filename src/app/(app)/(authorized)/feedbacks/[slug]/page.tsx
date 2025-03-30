@@ -88,7 +88,7 @@ export default function FeedbackPageComponent() {
           <CopyLink text={window.location.href.replace("feedbacks", "f")} />
         </div>
 
-        <p className="text-gray-600 mb-6 leading-relaxed">
+        <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
           {feedbackPageData.description}
         </p>
 
@@ -106,15 +106,15 @@ export default function FeedbackPageComponent() {
               </p>
             </div>
           ) : (
-            <div className="space-y-5 dark:bg-gray-900">
+            <div className="space-y-5 ">
               {feedbackPageData.feedbacks.map((feedback, index) => (
                 <div
                   key={index}
-                  className="bg-gray-50  dark:bg-gray-800 p-5 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-gray-50  dark:bg-gray-900 p-5 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
                   {feedback.answers.map((answer, idx) => (
                     <div key={idx} className="mb-3">
-                      <p className="font-medium flex items-center gap-2 text-gray-700">
+                      <p className="font-medium flex items-center gap-2 text-gray-700 dark:text-gray-300">
                         {
                           feedbackPageData.customQuestions.find(
                             (q) => q.id === answer.questionId
@@ -125,7 +125,9 @@ export default function FeedbackPageComponent() {
                       {answer.type === "rating" ? (
                         <StarRating value={Number(answer.response)} preview />
                       ) : (
-                        <p className="text-gray-600">{answer.response}</p>
+                        <p className="text-gray-600 dark:text-gray-400">
+                          {answer.response}
+                        </p>
                       )}
                     </div>
                   ))}
