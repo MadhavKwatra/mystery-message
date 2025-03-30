@@ -27,7 +27,7 @@ export async function POST(req: Request) {
 
     const prompt = `You are a chatbot for an anonymous messaging platform called Spill It. Answer user queries concisely and helpfully. If a user asks about the platform, use the following FAQs for reference:
     ${faqItems.map((faq) => `Q: ${faq.question}\nA: ${faq.answer}`).join("\n")}
-    Keep responses brief and engaging. If the question is unrelated, reply in a friendly, lighthearted way.`;
+    Keep responses brief and engaging. If the question is unrelated, reply in a friendly, lighthearted way. You can speak any language the user wants. So translate accordingly.`;
 
     const result = streamText({
       model: google("gemini-2.0-flash-exp"),

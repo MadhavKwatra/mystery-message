@@ -25,7 +25,7 @@ const steps = [
 export const HowItWorksSection = () => {
   return (
     <section className="py-20 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden">
-      <div className="container mx-auto px-4 relative">
+      <div className="container max-w-5xl mx-auto px-4 relative">
         {/* Decorative elements */}
         <div className="absolute top-0 left-10 w-32 h-32 bg-blue-100 dark:bg-blue-900/20 rounded-full blur-xl opacity-60"></div>
         <div className="absolute bottom-0 right-10 w-32 h-32 bg-purple-100 dark:bg-purple-900/20 rounded-full blur-xl opacity-60"></div>

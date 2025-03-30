@@ -79,7 +79,7 @@ function Navbar() {
           href="/"
           className="text-xl font-bold md:mb-0 flex items-center gap-2"
         >
-          <VenetianMask className="h-10 w-10 text-[#a855f7]" />
+          <VenetianMask className="h-8 w-8 text-[#a855f7]" />
           {APP_NAME}
         </Link>
         {/* Notification icon on right side for mobile */}

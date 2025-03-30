@@ -84,7 +84,7 @@ const feedbackTypes = [
 export const NewFeatureSection = () => {
   return (
     <section className="py-16 bg-white dark:bg-gray-900">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto max-w-5xl px-4">
         <div className="flex flex-col md:flex-row items-center gap-12">
           {/* Left side: Feature description */}
           <div className="md:w-1/2">
